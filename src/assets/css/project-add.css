@@ -1,0 +1,103 @@
+.project-add-screen {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.back-btn {
+  padding: 6px 0;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #3b82f6;
+  font-weight: bold;
+  width: 60px;
+  text-align: left;
+}
+
+/* 제목(h2)을 정확히 중앙에 배치하기 위해 양쪽 균형을 맞추는 빈 박스입니다 */
+.placeholder-box {
+  width: 60px;
+}
+
+.form-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fff;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.worker-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.worker-row input {
+  flex: 1;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.remove-btn {
+  padding: 12px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.add-worker-btn {
+  padding: 12px;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.save-btn {
+  padding: 15px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
