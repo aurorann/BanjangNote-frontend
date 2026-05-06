@@ -4,7 +4,6 @@
       <h2>진행 중인 현장</h2>
       <div class="nav-buttons">
         <button class="add-btn" @click="$router.push('/project/add')">+ 추가</button>
-        <button class="logout-btn" @click="$router.push('/')">로그아웃</button>
       </div>
     </header>
 

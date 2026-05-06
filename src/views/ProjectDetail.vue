@@ -1,5 +1,11 @@
 <template>
   <div class="project-detail-screen">
+    <!-- 로딩 바 (통신 중일 때만 표시) -->
+    <div v-if="loading" class="full-screen-loader">
+      <div class="spinner"></div>
+      <p>현장 정보를 불러오는 중...</p>
+    </div>
+    <template v-else-if="project">
     <header class="top-nav">
       <button class="back-btn" @click="$router.push('/dashboard')">◀ 이전</button>
       <h2>현장 관리</h2>
@@ -62,6 +68,11 @@
         </div>
       </div>
     </div>
+    </template>
+    <div v-else class="error-container">
+      <p>데이터를 불러오지 못했습니다.</p>
+      <button @click="$router.push('/dashboard')">대시보드로 돌아가기</button>
+    </div>
   </div>
 </template>
 
@@ -73,15 +84,26 @@ import { api } from '@/api/index.js'
 const route = useRoute()
 const project = ref(null)
 const assignments = ref([])
+const loading = ref(true)
 
 onMounted(async () => {
   const projectId = route.params.id
+  loading.value = true
 
   try {
-    project.value = await api.get(`/projects/${projectId}`)
-    assignments.value = await api.get(`/projects/${projectId}/assignments`)
+    // 두 API를 동시에 기다림 (속도 최적화)
+    const [projectRes, assignmentRes] = await Promise.all([
+      api.get(`/projects/${projectId}`),
+      api.get(`/projects/${projectId}/assignments`)
+    ])
+
+    project.value = projectRes
+    assignments.value = assignmentRes
   } catch (error) {
     console.error('데이터를 불러오는 중 에러 발생:', error)
+  } finally {
+    // 0.5초 정도 최소 로딩 시간을 주면 화면 깜빡임이 덜합니다.
+    setTimeout(() => { loading.value = false }, 500)
   }
 })
 

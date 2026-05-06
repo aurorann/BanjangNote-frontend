@@ -15,6 +15,10 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  width: 100%;       /* 부모(#app)의 500px을 꽉 채움 */
+  left: 0;
+  right: 0;
+  margin: 0 auto;    /* sticky 상태에서도 가운데 정렬 유지 */
 }
 
 .top-nav h2 {
@@ -225,4 +229,42 @@
 
 .btn-paid:hover {
   background-color: #bbf7d0;
+}
+
+.full-screen-loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.error-container button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #1f2937;
+  color: white;
+  border: none;
+  border-radius: 6px;
 }
