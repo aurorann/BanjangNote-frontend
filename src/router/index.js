@@ -3,25 +3,34 @@ import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import ProjectAdd from '../views/ProjectAdd.vue'
 import ProjectDetail from '../views/ProjectDetail.vue'
+import ClientList from '@/views/ClientList.vue'
+
+const routes = [
+  { path: '/', name: 'Login', component: Login },
+  { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+  { path: '/project/add', name: 'ProjectAdd', component: ProjectAdd, meta: { requiresAuth: true } },
+  { path: '/project/edit/:id', name: 'ProjectEdit', component: ProjectAdd, meta: { requiresAuth: true } },
+  { path: '/project/:id', name: 'ProjectDetail', component: ProjectDetail, meta: { requiresAuth: true } },
+  { path: '/clients', name: 'ClientList', component: ClientList, meta: { requiresAuth: true } },
+]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    { path: '/', name: 'login', component: Login },
-    { path: '/dashboard', name: 'dashboard', component: Dashboard },
-    { path: '/project/add', name: 'projectAdd', component: ProjectAdd },
-    // :id 는 주소창에 /project/1, /project/2 처럼 번호가 들어올 수 있게 해줍니다.
-    {
-      path: '/project/edit/:id',
-      name: 'projectEdit',
-      component: ProjectAdd,
-    },
-    {
-      path: '/project/:id',
-      name: 'projectDetail',
-      component: ProjectDetail,
-    },
-  ],
+  history: createWebHistory(),
+  routes
+})
+
+// 👮‍♂️ 라우터 보초병 (Navigation Guard)
+// 화면을 이동할 때마다 '토큰(통행증)'이 있는지 검사합니다.
+router.beforeEach((to, from) => {
+  const token = localStorage.getItem('token')
+
+  // 가려는 화면이 'requiresAuth(로그인 필수)'인데 토큰이 없다면?
+  if (to.meta.requiresAuth && !token) {
+    alert('로그인이 필요한 서비스입니다.')
+    return '/' // ⬅️ next('/') 대신 return '/' 을 사용합니다!
+  }
+
+  return true // ⬅️ next() 대신 return true 를 사용하여 통과시킵니다!
 })
 
 export default router

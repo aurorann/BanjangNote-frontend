@@ -1,7 +1,6 @@
 <template>
   <div class="project-add-screen">
     <header class="top-nav">
-      <!-- 텍스트가 상황에 맞게 바뀝니다! -->
       <button class="back-btn" @click="$router.go(-1)">◀ 이전</button>
       <h2>{{ isEditMode ? '현장 정보 수정' : '새 현장 등록' }}</h2>
       <div class="placeholder-box"></div>
@@ -40,10 +39,8 @@
         <input type="date" v-model="form.endDate" />
       </div>
 
-      <!-- 작업자 추가 섹션 -->
       <h3 class="section-title">투입 예정 작업자</h3>
 
-      <!-- v-for를 써서 추가 버튼을 누를 때마다 입력칸이 늘어납니다 -->
       <div class="worker-row" v-for="(worker, index) in workers" :key="index">
         <input type="text" placeholder="이름" v-model="worker.name" />
         <input type="text" placeholder="직급(기공 등)" v-model="worker.role" />
@@ -53,9 +50,16 @@
 
       <button class="add-worker-btn" @click="addWorker">+ 작업자 추가</button>
 
-      <button class="save-btn" @click="saveProject">
-        {{ isEditMode ? '수정 완료' : '현장 등록하기' }}
-      </button>
+      <!-- 버튼 그룹 영역 -->
+      <div class="button-group">
+        <button class="save-btn" @click="saveProject">
+          {{ isEditMode ? '수정 완료' : '현장 등록하기' }}
+        </button>
+
+        <button v-if="isEditMode" class="delete-btn" @click="handleDelete">
+          현장 삭제
+        </button>
+      </div>
     </div>
 
     <ClientModal
@@ -79,7 +83,6 @@ const clients = ref([])
 const isEditMode = computed(() => route.path.includes('/edit/'))
 const projectId = route.params.id
 
-// 사용자가 입력할 폼 데이터
 const form = ref({
   clientId: '',
   name: '',
@@ -91,17 +94,15 @@ const workers = ref([{ name: '', role: '', dailyRate: '' }])
 
 const showClientModal = ref(false)
 const handleClientSaved = (savedClient) => {
-  clients.value.push(savedClient) // 1. 드롭다운 목록에 새 업체 추가
-  form.value.clientId = savedClient.id // 2. 방금 추가한 업체를 자동 선택!
-  showClientModal.value = false // 3. 모달 닫기
+  clients.value.push(savedClient)
+  form.value.clientId = savedClient.id
+  showClientModal.value = false
 }
 
 onMounted(async () => {
   try {
-    // 1. 업체 목록 무조건 가져오기
     clients.value = await api.get('/clients')
 
-    // 2. 수정 모드라면, 기존 현장 데이터와 투입된 작업자 목록을 불러와서 폼에 채워넣습니다.
     if (isEditMode.value) {
       const projectData = await api.get(`/projects/${projectId}`)
       form.value = {
@@ -126,24 +127,20 @@ onMounted(async () => {
   }
 })
 
-// 작업자 행 추가 함수
 const addWorker = () => {
   workers.value.push({ name: '', role: '', dailyRate: '' })
 }
 
-// 작업자 행 삭제 함수
 const removeWorker = (index) => {
   workers.value.splice(index, 1)
 }
 
-// 저장 버튼 클릭 시 실행
 const saveProject = async () => {
   if (!form.value.name || !form.value.clientId) {
     alert('발주처와 현장명은 필수입니다!')
     return
   }
 
-  // 폼 데이터와 작업자 배열을 하나로 합쳐서 백엔드로 보냅니다.
   const payload = { ...form.value, workers: workers.value }
 
   try {
@@ -157,29 +154,24 @@ const saveProject = async () => {
     router.push('/dashboard')
   } catch (error) {
     console.error('저장 에러:', error)
-    alert('저장에 실패했습니다.')
+    alert(error.message || '저장에 실패했습니다.')
+  }
+}
+
+const handleDelete = async () => {
+  const confirmed = confirm('정말로 이 현장을 삭제하시겠습니까?\n이 현장에 속한 근무 기록도 모두 삭제되며 복구할 수 없습니다.')
+
+  if (confirmed) {
+    try {
+      await api.delete(`/projects/${projectId}`)
+      alert('현장이 정상적으로 삭제되었습니다.')
+      router.push('/dashboard')
+    } catch (error) {
+      console.error('삭제 에러:', error)
+      alert(error.message)
+    }
   }
 }
 </script>
 
-<style scoped>
-/* select 박스 디자인만 살짝 추가 */
-.form-select {
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  background-color: #fff;
-}
-
-.new-client-btn {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0 15px;
-  font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap;
-}
-</style>
+<style scoped src="../assets/css/project-add.css"></style>

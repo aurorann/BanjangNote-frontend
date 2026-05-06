@@ -1,30 +1,54 @@
 .project-add-screen {
   background-color: #f8f9fa;
   min-height: 100vh;
+  padding-bottom: 40px; /* 스크롤 여유 공간 */
+}
+
+/* --- 상단 네비게이션 --- */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.top-nav h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1f2937;
 }
 
 .back-btn {
-  padding: 6px 0;
   background: none;
   border: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: #3b82f6;
+  font-size: 15px;
   font-weight: bold;
-  width: 60px;
-  text-align: left;
+  color: #4b5563;
+  cursor: pointer;
+  padding: 5px 10px;
+  white-space: nowrap;
 }
 
-/* 제목(h2)을 정확히 중앙에 배치하기 위해 양쪽 균형을 맞추는 빈 박스입니다 */
 .placeholder-box {
-  width: 60px;
+  width: 60px; /* 제목 중앙 정렬용 빈 공간 */
 }
 
+/* --- 메인 입력 폼 영역 (카드 스타일 적용) --- */
 .form-container {
-  padding: 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  background-color: #fff;
+  margin: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid #f3f4f6;
 }
 
 .form-group {
@@ -36,25 +60,85 @@
 .form-group label {
   font-size: 14px;
   font-weight: bold;
-  color: #333;
+  color: #4b5563;
 }
 
+/* 기본 텍스트/날짜 입력칸 */
 .form-group input {
-  padding: 15px;
-  border: 1px solid #ddd;
+  padding: 14px;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   background-color: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  font-family: inherit;
 }
 
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* 🔥 수정된 발주처 선택 셀렉트 박스 (커스텀 화살표 적용) */
+.form-select {
+  /* 오른쪽 패딩을 40px로 늘려서 긴 글자가 화살표를 침범하지 않게 방어 */
+  padding: 14px 40px 14px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: inherit;
+
+  /* 1. 못생긴 브라우저 기본 화살표 숨기기 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* 2. 깔끔한 커스텀 SVG 화살표를 배경 이미지로 삽입 */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+
+  /* 3. 화살표 위치 완벽 조정! (오른쪽에서 15px 띄우고, 세로는 정중앙) */
+  background-position: right 15px top 50%;
+
+  /* 4. 화살표 크기 지정 */
+  background-size: 12px auto;
+}
+
+/* (선택 사항) 셀렉트 박스 클릭 시 파란색 테두리 효과 */
+.form-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.new-client-btn {
+  background-color: #1f2937;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
+}
+
+.new-client-btn:hover {
+  background-color: #111827;
+}
+
+/* --- 작업자 추가 영역 --- */
 .section-title {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: #1f2937;
   margin-top: 10px;
-  border-bottom: 2px solid #3b82f6;
-  padding-bottom: 5px;
-  display: inline-block;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
 }
 
 .worker-row {
@@ -64,40 +148,88 @@
   margin-bottom: 10px;
 }
 
+/* 작업자 입력칸 */
 .worker-row input {
   flex: 1;
   padding: 12px;
   font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
+/* 작업자 삭제(X) 버튼 - 높이를 입력칸과 똑같이 맞춤 */
 .remove-btn {
-  padding: 12px;
-  background-color: #ef4444;
-  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px; /* 정사각형 모양으로 */
+  height: 42px; /* 입력칸과 동일한 높이 */
+  background-color: #fee2e2;
+  color: #ef4444;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
+/* 작업자 추가(+) 버튼 */
 .add-worker-btn {
-  padding: 12px;
-  background-color: #e0f2fe;
-  color: #0369a1;
-  border: none;
+  padding: 14px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px dashed #d1d5db;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-worker-btn:hover {
+  background-color: #e5e7eb;
+}
+
+/* --- 🔥 누락되었던 하단 액션 버튼 (저장/삭제) --- */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 두 버튼의 공통 레이아웃 */
+.save-btn, .delete-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px; /* 큼직하고 누르기 편한 높이 */
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: inherit;
 }
 
 .save-btn {
-  padding: 15px;
   background-color: #3b82f6;
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.save-btn:hover {
+  background-color: #2563eb;
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
 }

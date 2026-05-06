@@ -1,0 +1,254 @@
+/* src/assets/css/client-list.css */
+
+.client-list-screen {
+  padding-bottom: 50px;
+  background-color: #f8f9fa; /* 다른 페이지와 동일한 배경색 */
+  min-height: 100vh;
+}
+
+/* --- 상단 네비게이션 --- */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.top-nav h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  color: #4b5563;
+  cursor: pointer;
+  padding: 5px 10px;
+  white-space: nowrap; /* 지난번 해결한 두 줄 방지 코드 */
+  flex-shrink: 0;
+}
+
+.placeholder-box {
+  width: 70px; /* 대시보드 버튼 너비에 맞춘 균형 박스 */
+}
+
+.content-container {
+  padding: 20px;
+}
+
+/* --- 새 거래처 등록 버튼 --- */
+.add-btn {
+  width: 100%;
+  padding: 16px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 12px; /* 카드와 동일한 곡률 */
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.add-btn:hover {
+  background-color: #2563eb;
+}
+
+/* --- 등록/수정 폼 카드 --- */
+.form-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f3f4f6;
+}
+
+.form-card h3 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 15px;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* 폼 하단 버튼 그룹 */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.save-btn, .cancel-btn {
+  flex: 1;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.save-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #2563eb;
+}
+
+.cancel-btn {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.cancel-btn:hover {
+  background-color: #e5e7eb;
+}
+
+/* --- 거래처 목록 영역 --- */
+.client-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.client-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 18px 20px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  border: 1px solid #f3f4f6;
+  transition: transform 0.2s;
+}
+
+.client-item:hover {
+  transform: translateY(-2px);
+}
+
+.client-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.client-name {
+  font-weight: bold;
+  font-size: 17px;
+  color: #1f2937;
+}
+
+.client-contact {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* 액션 버튼 (수정, 삭제) */
+.client-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.edit-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.delete-btn {
+  background-color: #fef2f2;
+  color: #ef4444;
+  border-color: #fecaca;
+}
+
+.delete-btn:hover {
+  background-color: #fee2e2;
+}
+
+.empty-msg {
+  text-align: center;
+  color: #9ca3af;
+  padding: 50px 0;
+  font-size: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column; /* 모바일처럼 좁은 화면에선 위아래로 배치 */
+    gap: 0;
+  }
+}
+
+.client-contact {
+  font-size: 13px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+}
