@@ -41,7 +41,7 @@
           <!-- 오른쪽: 수금 상황 뱃지 -->
           <div class="card-right">
             <div :class="['status-badge', project.isSettled ? 'settled' : 'unpaid']">
-              {{ project.isSettled ? '완료' : '대기' }}
+              {{ project.isSettled ? '수금 완료 💰' : '수금 대기' }}
             </div>
           </div>
         </div>
