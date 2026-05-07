@@ -44,15 +44,21 @@
 
 /* --- 메인 입력 폼 영역 (카드 스타일 적용) --- */
 .form-container {
+  width: auto;
+
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   background-color: #fff;
-  margin: 20px;
+
+  /* 마진이 있으면 width는 auto여야 화면 안에 들어옵니다 */
+  margin: 15px;
+
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   border: 1px solid #f3f4f6;
+  box-sizing: border-box; /* 패딩이 너비를 먹지 않게 방어 */
 }
 
 .form-group {
@@ -150,11 +156,13 @@
   gap: 8px;
   align-items: center;
   margin-bottom: 10px;
+  width: 100%;
 }
 
 /* 작업자 입력칸 */
 .worker-row input {
   flex: 1;
+  min-width: 0; /* 🔥 Flex 아이템이 부모를 뚫고 나가는 것을 방지하는 중요한 꿀팁 */
   padding: 12px;
   font-size: 14px;
   border: 1px solid #d1d5db;

@@ -24,7 +24,6 @@ body {
 
 .content-container, .project-list, .form-container {
   width: 100%;
-  padding: 20px; /* 양옆 여백이 너무 크면 좁아 보이니 15~20px이 적당합니다 */
   box-sizing: border-box;
 }
 

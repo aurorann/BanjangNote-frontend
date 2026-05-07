@@ -114,8 +114,22 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   border: 1px solid #f3f4f6;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s; /* 부드러운 호버 효과 */
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+
+/* 🔥 좌우 배치를 위한 Flex 설정 */
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 15px;
+}
+
+/* 왼쪽 정보 영역 */
+.card-body {
+  flex: 1; /* 남은 공간을 다 차지함 */
+}
+
 .project-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -128,42 +142,41 @@
   margin-bottom: 12px;
 }
 
-/* --- 뱃지 스타일 (누락된 부분 추가) --- */
-.badge {
-  display: inline-block;
-  padding: 4px 10px;
-  background-color: #e0f2fe;
-  color: #0369a1;
-  font-size: 12px;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
 .status-badge {
-  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
   font-size: 12px;
   border-radius: 6px;
   font-weight: bold;
+  white-space: nowrap; /* 뱃지 안 글씨 줄바꿈 방지 */
 }
 .status-badge.settled { background-color: #dcfce7; color: #166534; } /* 수금 완료: 초록색 */
 .status-badge.unpaid { background-color: #fee2e2; color: #991b1b; } /* 수금 대기: 빨간색 */
 
 /* --- 텍스트 스타일 정리 --- */
 .project-card h3 {
-  margin: 0 0 10px 0;
+  margin: 0 0 6px 0; /* 아래 여백 살짝 줄임 */
   color: #1f2937;
-  font-size: 18px;
+  font-size: 17px;
+  word-break: break-all; /* 긴 이름 대비 */
+}
+
+/* 오른쪽 뱃지 영역 */
+.card-right {
+  flex-shrink: 0; /* 뱃지가 찌그러지지 않게 고정 */
 }
 
 .client-name {
   color: #3b82f6;
   font-weight: bold;
-  margin: 0 0 6px 0;
-  font-size: 14px;
+  margin: 0 0 4px 0;
+  font-size: 13px;
 }
 
 .project-period {
-  color: #6b7280;
-  font-size: 13px;
+  color: #9ca3af; /* 색상을 조금 더 연하게 해서 현장명이 돋보이게 함 */
+  font-size: 12px;
   margin: 0;
 }
