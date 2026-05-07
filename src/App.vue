@@ -15,12 +15,17 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
-const userName = ref(localStorage.getItem('userName') || '사용자')
+const userName = ref('')
+
+// 페이지(route)가 바뀔 때마다 실행됨
+watch(() => route.path, () => {
+  userName.value = localStorage.getItem('userName') || '사용자'
+}, { immediate: true }) // 화면이 처음 켜질 때도 즉시 실행
 
 // 로그인, 회원가입 페이지에서는 전역 헤더를 숨깁니다.
 const showGlobalHeader = computed(() => {
@@ -30,6 +35,7 @@ const showGlobalHeader = computed(() => {
 const handleLogout = () => {
   if (confirm('로그아웃 하시겠습니까?')) {
     localStorage.clear() // 토큰, 이름 등 삭제
+    userName.value = '' // 변수도 비워줌
     router.push('/')
   }
 }

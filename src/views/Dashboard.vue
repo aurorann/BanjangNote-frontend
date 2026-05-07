@@ -26,21 +26,25 @@
         :key="project.id"
         @click="$router.push(`/project/${project.id}`)"
       >
-        <!-- 인라인 스타일 제거 & 클래스 부여 -->
-        <div class="card-header">
-          <div class="badge">진행중</div>
-          <!-- 누락되었던 CSS 클래스 연결 -->
-          <div :class="project.isSettled ? 'status-badge settled' : 'status-badge unpaid'">
-            {{ project.isSettled ? '수금 완료 💰' : '수금 대기' }}
+        <div class="card-content">
+          <!-- 왼쪽: 현장 정보 묶음 -->
+          <div class="card-body">
+            <h3>{{ project.name }}</h3>
+            <p v-if="project.client" class="client-name">
+              🏢 {{ project.client.name }}
+            </p>
+            <p class="project-period">
+              📅 {{ project.startDate }} ~ {{ project.endDate || '미정' }}
+            </p>
+          </div>
+
+          <!-- 오른쪽: 수금 상황 뱃지 -->
+          <div class="card-right">
+            <div :class="['status-badge', project.isSettled ? 'settled' : 'unpaid']">
+              {{ project.isSettled ? '수금 완료 💰' : '수금 대기' }}
+            </div>
           </div>
         </div>
-
-        <h3>{{ project.name }}</h3>
-
-        <p v-if="project.client" class="client-name">
-          🏢 발주처: {{ project.client.name }}
-        </p>
-        <p class="project-period">기간: {{ project.startDate }} ~ {{ project.endDate || '미정' }}</p>
       </div>
     </div>
   </div>
