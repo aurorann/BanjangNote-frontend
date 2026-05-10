@@ -28,17 +28,37 @@ body {
   box-sizing: border-box;
 }
 
-/* =========================================
-   Project Add 화면 공통 요소
-========================================= */
-
 .form-select {
-  padding: 15px;
-  border: 1px solid #ddd;
+  /* 오른쪽 패딩을 40px로 늘려서 긴 글자가 화살표를 침범하지 않게 방어 */
+  padding: 14px 40px 14px 14px;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   background-color: #fff;
-  box-sizing: border-box; /* 높이 계산 보정 */
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: inherit;
+
+  /* 1. 못생긴 브라우저 기본 화살표 숨기기 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* 2. 깔끔한 커스텀 SVG 화살표를 배경 이미지로 삽입 */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+
+  /* 3. 화살표 위치 완벽 조정! (오른쪽에서 15px 띄우고, 세로는 정중앙) */
+  background-position: right 15px top 50%;
+
+  /* 4. 화살표 크기 지정 */
+  background-size: 12px auto;
+}
+
+/* (선택 사항) 셀렉트 박스 클릭 시 파란색 테두리 효과 */
+.form-select:focus {
+  outline: none;
+  border-color: #3b82f6;
 }
 
 .new-client-btn {
