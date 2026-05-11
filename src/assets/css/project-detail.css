@@ -4,29 +4,6 @@
   padding-bottom: 40px;
 }
 
-/* --- 상단 네비게이션 --- */
-.top-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  width: 100%;       /* 부모(#app)의 500px을 꽉 채움 */
-  left: 0;
-  right: 0;
-  margin: 0 auto;    /* sticky 상태에서도 가운데 정렬 유지 */
-}
-
-.top-nav h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #1f2937;
-}
-
 .back-btn {
   background: none;
   border: none;

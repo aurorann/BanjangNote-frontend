@@ -35,6 +35,7 @@ const showGlobalHeader = computed(() => {
 const handleLogout = () => {
   if (confirm('로그아웃 하시겠습니까?')) {
     localStorage.clear() // 토큰, 이름 등 삭제
+    sessionStorage.removeItem('projectSearchFilter')
     userName.value = '' // 변수도 비워줌
     router.push('/')
   }
@@ -51,6 +52,8 @@ const handleLogout = () => {
   align-items: center;
   z-index: 100;
   width: 100%; /* 부모 500px 안에서 꽉 참 */
+  position: sticky;
+  top: 0;
 }
 
 .user-info {

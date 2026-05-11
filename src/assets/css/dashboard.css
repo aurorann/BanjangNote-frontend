@@ -5,29 +5,6 @@
   min-height: 100vh;
 }
 
-/* --- 상단 네비게이션 --- */
-.top-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  width: 100%;       /* 부모(#app)의 500px을 꽉 채움 */
-  left: 0;
-  right: 0;
-  margin: 0 auto;    /* sticky 상태에서도 가운데 정렬 유지 */
-}
-
-.top-nav h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #1f2937;
-}
-
 .nav-buttons {
   display: flex;
   align-items: center;
@@ -179,4 +156,221 @@
   color: #9ca3af; /* 색상을 조금 더 연하게 해서 현장명이 돋보이게 함 */
   font-size: 12px;
   margin: 0;
+}
+
+/* --- 새로 추가된 필터 버튼 --- */
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+/* --- 필터 모달 (팝업창) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검은 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  width: 90%;
+  max-width: 400px;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  position: relative; /* 🔥 닫기 버튼의 기준점이 됩니다 */
+}
+
+.modal-content h3 {
+  margin: 0 0 20px 0;
+  color: #1f2937;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* 필터 입력 폼 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #4b5563;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.form-input {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 날짜 나란히 배치 */
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+.form-row .form-group {
+  flex: 1;
+}
+
+/* 모달 하단 버튼 */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.apply-btn, .reset-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+}
+
+.apply-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.reset-btn {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+/* 빈 리스트 안내 문구 */
+.empty-msg {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+  font-size: 15px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #f3f4f6;
+}
+
+.modal-header h3 {
+  margin: 0 0 20px 0;
+  color: #1f2937;
+  font-size: 18px;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #1f2937; /* 마우스 올리면(또는 터치 시) 진해짐 */
+}
+
+.load-more-area {
+  padding: 20px;
+  text-align: center;
+  min-height: 50px;
+}
+.mini-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+.end-msg {
+  color: #9ca3af;
+  font-size: 13px;
+  margin: 0;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 검색 요약 영역 스타일 */
+.filter-summary {
+  padding: 0 20px; /* 좌우 여백을 다른 섹션과 맞춤 */
+  margin-top: 10px;
+}
+
+.summary-content {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.calendar-icon {
+  font-size: 14px;
+}
+
+.date-text {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.client-badge {
+  background-color: #eff6ff;
+  color: #3b82f6;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 11px;
+  margin-left: auto; /* 업체명은 오른쪽 끝으로 밀기 */
 }
