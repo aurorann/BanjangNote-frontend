@@ -8,7 +8,6 @@
       </div>
     </header>
 
-    <!-- 인라인 스타일 제거 & 클래스 부여 -->
     <div class="action-section">
       <button class="client-manage-btn" @click="$router.push('/clients')">
         🏢 거래처(발주처) 관리 가기
@@ -50,9 +49,26 @@
       </div>
     </div>
 
+    <div class="filter-summary">
+      <div class="summary-content">
+        <span class="calendar-icon">📅</span>
+        <span class="date-text">
+          <template v-if="!filter.startDate && !filter.endDate">전체 기간</template>
+          <template v-else>
+            {{ filter.startDate || '전체' }} ~ {{ filter.endDate || '전체' }}
+          </template>
+        </span>
+        <span v-if="filter.clientId" class="client-badge">
+      🏢 {{ clients.find(c => c.id === filter.clientId)?.name }}
+    </span>
+      </div>
+    </div>
+
     <div class="project-list">
-      <div v-if="loading" class="loading-msg">데이터를 불러오는 중입니다...</div>
+      <div v-if="loading && page === 0" class="loading-msg">데이터를 불러오는 중입니다...</div>
+
       <div v-else-if="projects.length === 0" class="empty-msg">조건에 맞는 현장이 없습니다.</div>
+
       <div
         v-else
         class="project-card"
@@ -61,7 +77,6 @@
         @click="$router.push(`/project/${project.id}`)"
       >
         <div class="card-content">
-          <!-- 왼쪽: 현장 정보 묶음 -->
           <div class="card-body">
             <h3>{{ project.name }}</h3>
             <p v-if="project.client" class="client-name">🏢 {{ project.client.name }}</p>
@@ -70,46 +85,100 @@
             </p>
           </div>
 
-          <!-- 오른쪽: 수금 상황 뱃지 -->
           <div class="card-right">
             <div :class="['status-badge', project.isSettled ? 'settled' : 'unpaid']">
               {{ project.isSettled ? '수금 완료 💰' : '수금 대기' }}
             </div>
           </div>
         </div>
-      </div>
+      </div> <div ref="loadMoreTrigger" class="load-more-area">
+      <div v-if="loading && page > 0" class="mini-spinner"></div>
+      <p v-if="isLastPage && projects.length > 0" class="end-msg">마지막 현장입니다.</p>
+    </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { api } from '@/api/index.js'
 
 const projects = ref([])
 const clients = ref([])
-const loading = ref(true)
+const loading = ref(false)
 const showFilter = ref(false)
 
-// 필터 상태값 저장
-const filter = ref({
-  clientId: '',
-  startDate: '',
-  endDate: '',
-})
+const page = ref(0)
+const isLastPage = ref(false)
+const loadMoreTrigger = ref(null)
+let observer = null
 
-// 데이터 불러오기 함수 (파라미터 조합 포함)
-const fetchProjects = async () => {
+// 기본 날짜 계산 (오늘 기준 -7일, +7일)
+const getDefaultDates = () => {
+  const today = new Date()
+
+  const start = new Date(today)
+  start.setDate(today.getDate() - 7)
+
+  const end = new Date(today)
+  end.setDate(today.getDate() + 7)
+
+  return {
+    startDate: start.toISOString().split('T')[0],
+    endDate: end.toISOString().split('T')[0]
+  }
+}
+
+const defaultDates = getDefaultDates()
+
+// 세션 스토리지에서 기존 필터 불러오기
+const savedFilter = sessionStorage.getItem('projectSearchFilter')
+
+// 저장된 필터가 있으면 쓰고, 없으면 기본 날짜 세팅
+const filter = ref(
+  savedFilter ? JSON.parse(savedFilter) : {
+    clientId: '',
+    startDate: defaultDates.startDate,
+    endDate: defaultDates.endDate,
+  }
+)
+
+// 필터 값이 바뀔 때마다 세션 스토리지에 자동 저장 (페이지 이동 시 유지용)
+watch(filter, (newVal) => {
+  sessionStorage.setItem('projectSearchFilter', JSON.stringify(newVal))
+}, { deep: true }) // 객체 내부의 값이 바뀌는 것까지 감지
+
+
+const fetchProjects = async (isNewSearch = false) => {
+  if (loading.value || (isLastPage.value && !isNewSearch)) return
+
   loading.value = true
+
+  if (isNewSearch) {
+    page.value = 0
+    projects.value = []
+    isLastPage.value = false
+  }
+
   try {
-    // 값이 있는 필터만 파라미터로 조립 (?clientId=1&startDate=2024-01-01)
     const query = new URLSearchParams()
     if (filter.value.clientId) query.append('clientId', filter.value.clientId)
     if (filter.value.startDate) query.append('startDate', filter.value.startDate)
     if (filter.value.endDate) query.append('endDate', filter.value.endDate)
 
+    query.append('page', page.value)
+    query.append('size', 10)
+
     const queryString = query.toString() ? `?${query.toString()}` : ''
-    projects.value = await api.get(`/projects${queryString}`)
+    const response = await api.get(`/projects${queryString}`)
+
+    const newItems = response.content || response
+    projects.value.push(...newItems)
+
+    isLastPage.value = response.last ?? (newItems.length < 10)
+    if (!isLastPage.value) page.value++
+
   } catch (error) {
     console.error('현장 로드 실패:', error)
   } finally {
@@ -119,21 +188,37 @@ const fetchProjects = async () => {
 
 onMounted(async () => {
   try {
-    // 팝업 셀렉트박스용 거래처 목록 미리 불러오기
     clients.value = await api.get('/clients')
-    await fetchProjects()
+    await fetchProjects(true)
+
+    observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !isLastPage.value && !loading.value) {
+        fetchProjects(false)
+      }
+    }, { threshold: 0.5 })
+
+    if (loadMoreTrigger.value) observer.observe(loadMoreTrigger.value)
+
   } catch (error) {
     console.error('초기 데이터 로드 에러:', error)
   }
 })
 
+onUnmounted(() => {
+  if (observer) observer.disconnect()
+})
+
 const applyFilter = () => {
   showFilter.value = false
-  fetchProjects() // 필터 적용 후 다시 호출
+  fetchProjects(true)
 }
 
 const resetFilter = () => {
-  filter.value = { clientId: '', startDate: '', endDate: '' }
+  filter.value = {
+    clientId: '',
+    startDate: '',
+    endDate: ''
+  }
 }
 </script>
 
