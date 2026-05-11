@@ -26,7 +26,14 @@
           </div>
           <div class="form-group" style="flex: 1">
             <label>연락처</label>
-            <input type="text" v-model="form.contactPhone" placeholder="예: 010-1234-5678" />
+            <input
+              type="tel"
+              :value="form.contactPhone"
+              @input="handlePhoneInput"
+              placeholder="예: 010-1234-5678"
+              maxlength="13"
+            />
+            <span v-if="phoneError" class="error-msg">{{ phoneError }}</span>
           </div>
         </div>
 
@@ -63,6 +70,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { api } from '../api'
+import { autoFormatPhoneNumber, isValidPhoneNumber } from '@/utils/formatters.js'
 
 const clients = ref([])
 const showForm = ref(false)
@@ -72,7 +80,28 @@ const form = ref({
   id: null,
   name: '',
   contactName: '',
+  contactPhone: '',
 })
+const phoneError = ref('')
+
+// 사용자가 입력할 때마다 실행되는 함수
+const handlePhoneInput = (event) => {
+  // 1. 입력된 값을 가져와서 자동 포맷팅
+  const formatted = autoFormatPhoneNumber(event.target.value)
+
+  // 2. form 데이터에 덮어쓰기 (화면에 즉시 반영됨)
+  form.value.contactPhone = formatted
+
+  // 3. 입력 필드의 값도 강제로 맞춰줌 (커서 튐 현상 방지)
+  event.target.value = formatted
+
+  // (선택) 실시간 에러 검증 - 다 입력했을 때만 검사
+  if (formatted.length === 13 && !isValidPhoneNumber(formatted)) {
+    phoneError.value = '올바른 전화번호 형식이 아닙니다.'
+  } else {
+    phoneError.value = ''
+  }
+}
 
 // 1. 거래처 목록 불러오기
 const fetchClients = async () => {
@@ -88,14 +117,21 @@ onMounted(fetchClients)
 // 2. 폼 열기 (등록 모드)
 const openAddForm = () => {
   isEditMode.value = false
-  form.value = { id: null, name: '', contactName: '' }
+  form.value = { id: null, name: '', contactName: '', contactPhone: '' }
+  phoneError.value = ''
   showForm.value = true
 }
 
 // 3. 폼 열기 (수정 모드)
 const openEditForm = (client) => {
   isEditMode.value = true
-  form.value = { id: client.id, name: client.name, contactName: client.contactName }
+  form.value = {
+    id: client.id,
+    name: client.name,
+    contactName: client.contactName || '',
+    contactPhone: client.contactPhone || ''
+  }
+  phoneError.value = ''
   showForm.value = true
 }
 
@@ -111,8 +147,18 @@ const saveClient = async () => {
     return
   }
 
+  if (form.value.contactPhone && !isValidPhoneNumber(form.value.contactPhone)) {
+    phoneError.value = '올바른 전화번호 형식이 아닙니다.' // 화면에 빨간 글씨 띄움
+    alert('연락처 형식을 다시 확인해주세요.')
+    return // 여기서 함수를 종료시켜서 서버로 안 넘어가게 막음
+  }
+
   try {
-    const payload = { name: form.value.name, contactName: form.value.contactName }
+    const payload = {
+      name: form.value.name,
+      contactName: form.value.contactName,
+      contactPhone: form.value.contactPhone,
+    }
 
     if (isEditMode.value) {
       await api.put(`/clients/${form.value.id}`, payload)
@@ -121,7 +167,6 @@ const saveClient = async () => {
       await api.post('/clients', payload)
       alert('새 거래처가 등록되었습니다.')
     }
-
     closeForm()
     fetchClients() // 목록 새로고침
   } catch (error) {

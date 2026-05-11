@@ -5,29 +5,6 @@
   min-height: 100vh;
 }
 
-/* --- 상단 네비게이션 --- */
-.top-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  width: 100%;       /* 부모(#app)의 500px을 꽉 채움 */
-  left: 0;
-  right: 0;
-  margin: 0 auto;    /* sticky 상태에서도 가운데 정렬 유지 */
-}
-
-.top-nav h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #1f2937;
-}
-
 .nav-buttons {
   display: flex;
   align-items: center;
@@ -336,4 +313,64 @@
 
 .close-btn:hover {
   color: #1f2937; /* 마우스 올리면(또는 터치 시) 진해짐 */
+}
+
+.load-more-area {
+  padding: 20px;
+  text-align: center;
+  min-height: 50px;
+}
+.mini-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+.end-msg {
+  color: #9ca3af;
+  font-size: 13px;
+  margin: 0;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 검색 요약 영역 스타일 */
+.filter-summary {
+  padding: 0 20px; /* 좌우 여백을 다른 섹션과 맞춤 */
+  margin-top: 10px;
+}
+
+.summary-content {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.calendar-icon {
+  font-size: 14px;
+}
+
+.date-text {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.client-badge {
+  background-color: #eff6ff;
+  color: #3b82f6;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 11px;
+  margin-left: auto; /* 업체명은 오른쪽 끝으로 밀기 */
 }

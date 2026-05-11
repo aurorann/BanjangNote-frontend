@@ -43,8 +43,20 @@
 
       <div class="worker-row" v-for="(worker, index) in workers" :key="index">
         <input type="text" placeholder="이름" v-model="worker.name" />
-        <input type="text" placeholder="직급(기공 등)" v-model="worker.role" />
-        <input type="number" placeholder="일당(원)" v-model="worker.dailyRate" />
+        <select v-model="worker.role" class="form-select">
+          <option value="" disabled>직급 선택</option>
+          <option value="초급">초급 (조공)</option>
+          <option value="중급">중급 (준기공)</option>
+          <option value="고급">고급 (기공)</option>
+          <option value="반장">반장</option>
+          <option value="기타">기타</option>
+        </select>
+        <input
+          type="tel"
+          placeholder="일당(원)"
+          :value="autoFormatCurrency(worker.dailyRate)"
+          @input="handleDailyRateInput(index, $event)"
+        />
         <button class="remove-btn" @click="removeWorker(index)">X</button>
       </div>
 
@@ -75,6 +87,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { api } from '../api'
 import ClientModal from '../components/ClientModal.vue'
+import { autoFormatCurrency, stripCurrency } from '@/utils/formatters.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -93,10 +106,22 @@ const form = ref({
 const workers = ref([{ name: '', role: '', dailyRate: '' }])
 
 const showClientModal = ref(false)
+
 const handleClientSaved = (savedClient) => {
   clients.value.push(savedClient)
   form.value.clientId = savedClient.id
   showClientModal.value = false
+}
+
+const handleDailyRateInput = (index, event) => {
+  // 1. 화면에 보일 콤마 찍힌 문자열 생성 (예: "150,000")
+  const formatted = autoFormatCurrency(event.target.value)
+
+  // 2. 입력창(UI)에 콤마가 찍힌 값을 즉시 강제로 덮어씌움
+  event.target.value = formatted
+
+  // 3. 실제 DB에 보낼 Vue 데이터(workers.value)에는 순수 숫자(예: 150000)만 저장
+  workers.value[index].dailyRate = stripCurrency(formatted)
 }
 
 onMounted(async () => {
@@ -142,6 +167,8 @@ const saveProject = async () => {
   }
 
   const payload = { ...form.value, workers: workers.value }
+  console.log("param :", payload)
+  // return
 
   try {
     if (isEditMode.value) {
