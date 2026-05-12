@@ -52,6 +52,7 @@
 
 /* 기본 텍스트/날짜 입력칸 */
 .form-group input {
+  width: 100%;
   padding: 14px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
@@ -60,6 +61,9 @@
   box-sizing: border-box;
   transition: border-color 0.2s;
   font-family: inherit;
+  /* 아이폰(iOS)에서 입력창에 둥근 그림자 생기는 거 방지용 */
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .form-group input:focus {
