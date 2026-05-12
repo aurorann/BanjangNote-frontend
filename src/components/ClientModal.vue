@@ -39,26 +39,27 @@
 <script setup>
 import { ref } from 'vue'
 import { api } from '@/api/index.js'
+import { toast } from '@/stores/toast.js'
 
-// 🔥 부모(ProjectAdd)에게 신호를 보내기 위한 이벤트 정의
+// 부모(ProjectAdd)에게 신호를 보내기 위한 이벤트 정의
 const emit = defineEmits(['close', 'saved'])
 
 const newClient = ref({ name: '', contactName: '', contactPhone: '' })
 
 const saveNewClient = async () => {
   if (!newClient.value.name.trim()) {
-    alert('업체명은 필수입니다!')
+    toast.warn('업체명은 필수입니다!')
     return
   }
 
   try {
     const savedClient = await api.post('/clients', newClient.value)
-    alert('새 업체가 등록되었습니다.')
-    // 🔥 저장이 성공하면 부모에게 'saved' 이벤트와 함께 저장된 데이터를 넘겨줍니다!
+    toast.success('새 업체가 등록되었습니다.')
+    // 저장 성공시 부모에게 'saved' 이벤트와 함께 저장된 데이터 넘김
     emit('saved', savedClient)
   } catch (error) {
     console.error('업체 등록 실패:', error)
-    alert('업체 등록 중 에러가 발생했습니다.')
+    toast.error('업체 등록 중 에러가 발생했습니다.')
   }
 }
 </script>

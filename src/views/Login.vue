@@ -24,7 +24,7 @@
             :class="{ 'input-error': emailError }"
             required
           />
-          <!-- 🔥 에러 메시지 출력 영역 -->
+          <!-- 에러 메시지 출력 영역 -->
           <span v-if="emailError" class="error-text">{{ emailError }}</span>
         </div>
 
@@ -53,6 +53,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { api } from '@/api/index.js'
+import { toast } from '@/stores/toast.js'
 
 const router = useRouter()
 const isLoginMode = ref(true)
@@ -63,10 +64,10 @@ const form = ref({
   password: ''
 })
 
-// 🔥 이메일 에러 메시지를 담을 변수
+// 이메일 에러 메시지를 담을 변수
 const emailError = ref('')
 
-// ✅ 이메일 유효성 검사 함수 (정규식 사용)
+// 이메일 유효성 검사 함수 (정규식 사용)
 const validateEmail = () => {
   // 영어/숫자 @ 영어/숫자 . 영어/숫자 구조인지 확인하는 정규식
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -92,9 +93,9 @@ const toggleMode = () => {
 }
 
 const handleSubmit = async () => {
-  // 🔥 서버로 보내기 전에 이메일 유효성을 마지막으로 확인!
+  // 서버로 보내기 전 이메일 유효성 마지막 확인
   if (!validateEmail()) {
-    alert('이메일 형식을 확인해주세요.')
+    toast.warn('이메일 형식을 확인해주세요.')
     return
   }
 
@@ -106,24 +107,23 @@ const handleSubmit = async () => {
       })
       localStorage.setItem('token', response.token)
       localStorage.setItem('userName', response.name)
-      alert(`환영합니다, ${response.name}님!`)
+      toast.info(`환영합니다, ${response.name}님!`)
       router.push('/dashboard')
     } else {
       await api.post('/auth/signup', form.value)
-      alert('회원가입이 완료되었습니다. 로그인해주세요!')
+      toast.info('회원가입이 완료되었습니다. 로그인해주세요!')
       toggleMode()
     }
   } catch (error) {
     console.error('인증 에러:', error)
-    // 1. 서버가 완전히 죽었거나 네트워크가 끊긴 경우 (Fetch 자체의 실패)
+    // 서버가 완전히 죽었거나 네트워크가 끊긴 경우 (Fetch 자체의 실패)
     if (error.message.includes('Failed to fetch') || error.message.includes('API POST Error')) {
-      alert(isLoginMode.value
+      toast.error(isLoginMode.value
         ? '서버와 통신할 수 없습니다. 잠시 후 다시 시도해주세요.'
         : '회원가입 처리 중 서버 문제가 발생했습니다.')
     }
-    // 2. 그 외 (우리가 백엔드에서 정성스럽게 던져준 에러 메시지)
     else {
-      alert(error.message)
+      toast.error(error.message)
     }
   }
 }
