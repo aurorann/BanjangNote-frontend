@@ -70,17 +70,26 @@ const handleLogout = async () => {
 </script>
 
 <style>
+:root {
+  /* 헤더 높이 전역 변수로 선언 */
+  --header-height: 56px;
+}
+
 .global-user-header {
   background-color: #1f2937;
   color: white;
-  padding: 10px 16px;
+  padding: 0 16px; /* 위아래 패딩을 없애고 높이 자체를 강제합니다 */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 100;
-  width: 100%; /* 부모 500px 안에서 꽉 참 */
+  z-index: 1000; /* 서브 네비게이션(900)보다 무조건 위에 오도록 1000으로 설정 */
+  width: 100%;
   position: sticky;
   top: 0;
+
+  /* 🔥 핵심: 높이를 변수로 고정하고, 패딩이 높이를 뚫고 나가지 않게 제어 */
+  height: var(--header-height);
+  box-sizing: border-box;
 }
 
 .user-info {
@@ -122,7 +131,8 @@ const handleLogout = async () => {
 /* 🎨 토스트 스타일 */
 .toast-container {
   position: fixed;
-  top: 60px; /* 전역 헤더 바로 아래에 뜨게 조절 */
+  /* 🔥 핵심: 하드코딩된 60px 대신, 헤더 높이 + 10px 위치에 뜨도록 변경 */
+  top: calc(var(--header-height) + 10px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;

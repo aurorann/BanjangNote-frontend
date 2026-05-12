@@ -137,8 +137,9 @@ body {
   background-color: #fff;
   border-bottom: 1px solid #eee;
   position: sticky;
-  top: 45.5px;
-  z-index: 10;
+  top: var(--header-height);
+  z-index: 900;
+  background-color: white;
   width: 100%;       /* 부모(#app)의 500px을 꽉 채움 */
   left: 0;
   right: 0;
