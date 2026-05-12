@@ -362,7 +362,12 @@
 
 .date-text {
   font-weight: 600;
-  color: #1f2937;
+  color: #4b5563; /* 기본 색상 (회색 계열) */
+  transition: color 0.2s; /* 색상 변경 시 부드럽게 */
+}
+
+.date-text.is-filtered {
+  color: #3b82f6; /* 파란색으로 강조 */
 }
 
 .client-badge {

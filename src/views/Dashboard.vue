@@ -52,8 +52,9 @@
     <div class="filter-summary">
       <div class="summary-content">
         <span class="calendar-icon">📅</span>
-        <span class="date-text">
+        <span class="date-text" :class="{ 'is-filtered': filter.startDate || filter.endDate }">
           <template v-if="!filter.startDate && !filter.endDate">전체 기간</template>
+
           <template v-else>
             {{ filter.startDate || '전체' }} ~ {{ filter.endDate || '전체' }}
           </template>

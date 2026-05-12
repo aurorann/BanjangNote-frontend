@@ -71,6 +71,8 @@
 import { ref, onMounted } from 'vue'
 import { api } from '../api'
 import { autoFormatPhoneNumber, isValidPhoneNumber } from '@/utils/formatters.js'
+import { toast } from '@/stores/toast.js'
+import { showConfirm } from '@/stores/confirm.js'
 
 const clients = ref([])
 const showForm = ref(false)
@@ -86,16 +88,16 @@ const phoneError = ref('')
 
 // 사용자가 입력할 때마다 실행되는 함수
 const handlePhoneInput = (event) => {
-  // 1. 입력된 값을 가져와서 자동 포맷팅
+  // 입력된 값을 가져와서 자동 포맷팅
   const formatted = autoFormatPhoneNumber(event.target.value)
 
-  // 2. form 데이터에 덮어쓰기 (화면에 즉시 반영됨)
+  // form 데이터에 덮어쓰기 (화면에 즉시 반영)
   form.value.contactPhone = formatted
 
-  // 3. 입력 필드의 값도 강제로 맞춰줌 (커서 튐 현상 방지)
+  // 입력 필드의 값도 강제로 맞춰줌 (커서 튐 현상 방지)
   event.target.value = formatted
 
-  // (선택) 실시간 에러 검증 - 다 입력했을 때만 검사
+  // 실시간 에러 검증 - 다 입력했을 때만 검사
   if (formatted.length === 13 && !isValidPhoneNumber(formatted)) {
     phoneError.value = '올바른 전화번호 형식이 아닙니다.'
   } else {
@@ -103,7 +105,6 @@ const handlePhoneInput = (event) => {
   }
 }
 
-// 1. 거래처 목록 불러오기
 const fetchClients = async () => {
   try {
     clients.value = await api.get('/clients')
@@ -114,7 +115,6 @@ const fetchClients = async () => {
 
 onMounted(fetchClients)
 
-// 2. 폼 열기 (등록 모드)
 const openAddForm = () => {
   isEditMode.value = false
   form.value = { id: null, name: '', contactName: '', contactPhone: '' }
@@ -122,7 +122,6 @@ const openAddForm = () => {
   showForm.value = true
 }
 
-// 3. 폼 열기 (수정 모드)
 const openEditForm = (client) => {
   isEditMode.value = true
   form.value = {
@@ -135,22 +134,20 @@ const openEditForm = (client) => {
   showForm.value = true
 }
 
-// 4. 폼 닫기
 const closeForm = () => {
   showForm.value = false
 }
 
-// 5. 저장 (등록 또는 수정)
 const saveClient = async () => {
   if (!form.value.name.trim()) {
-    alert('업체명을 입력해주세요.')
+    toast.warn('업체명을 입력해주세요.')
     return
   }
 
   if (form.value.contactPhone && !isValidPhoneNumber(form.value.contactPhone)) {
     phoneError.value = '올바른 전화번호 형식이 아닙니다.' // 화면에 빨간 글씨 띄움
-    alert('연락처 형식을 다시 확인해주세요.')
-    return // 여기서 함수를 종료시켜서 서버로 안 넘어가게 막음
+    toast.warn('연락처 형식을 확인해주세요.')
+    return
   }
 
   try {
@@ -162,27 +159,26 @@ const saveClient = async () => {
 
     if (isEditMode.value) {
       await api.put(`/clients/${form.value.id}`, payload)
-      alert('거래처가 수정되었습니다.')
+      toast.success('거래처가 수정되었습니다.')
     } else {
       await api.post('/clients', payload)
-      alert('새 거래처가 등록되었습니다.')
+      toast.success('새 거래처가 등록되었습니다.')
     }
     closeForm()
     fetchClients() // 목록 새로고침
   } catch (error) {
-    alert(error.message || '저장에 실패했습니다.')
+    toast.error(error.message || '저장에 실패했습니다.');
   }
 }
 
-// 6. 삭제
 const deleteClient = async (id) => {
-  if (confirm('이 거래처를 삭제하시겠습니까?\n주의: 관련된 현장 데이터에 영향을 줄 수 있습니다.')) {
+  if (await showConfirm('이 거래처를 삭제하시겠습니까?\n주의: 관련된 현장 데이터에 영향을 줄 수 있습니다.')) {
     try {
       await api.delete(`/clients/${id}`)
-      alert('삭제되었습니다.')
+      toast.success('삭제되었습니다.')
       fetchClients() // 목록 새로고침
     } catch (error) {
-      alert(error.message || '삭제에 실패했습니다.')
+      toast.error(error.message || '삭제에 실패했습니다.');
     }
   }
 }

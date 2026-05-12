@@ -88,6 +88,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { api } from '../api'
 import ClientModal from '../components/ClientModal.vue'
 import { autoFormatCurrency, stripCurrency } from '@/utils/formatters.js'
+import { toast } from '@/stores/toast.js'
+import { showConfirm } from '@/stores/confirm.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -162,40 +164,36 @@ const removeWorker = (index) => {
 
 const saveProject = async () => {
   if (!form.value.name || !form.value.clientId) {
-    alert('발주처와 현장명은 필수입니다!')
+    toast.warn('발주처와 현장명은 필수입니다.')
     return
   }
 
   const payload = { ...form.value, workers: workers.value }
-  console.log("param :", payload)
-  // return
 
   try {
     if (isEditMode.value) {
       await api.put(`/projects/${projectId}`, payload)
-      alert('성공적으로 수정되었습니다.')
+      toast.success('성공적으로 수정되었습니다.')
     } else {
       await api.post('/projects', payload)
-      alert('현장이 성공적으로 등록되었습니다.')
+      toast.success('현장이 성공적으로 등록되었습니다.')
     }
     router.push('/dashboard')
   } catch (error) {
     console.error('저장 에러:', error)
-    alert(error.message || '저장에 실패했습니다.')
+    toast.error(error.message || '저장에 실패했습니다.');
   }
 }
 
 const handleDelete = async () => {
-  const confirmed = confirm('정말로 이 현장을 삭제하시겠습니까?\n이 현장에 속한 근무 기록도 모두 삭제되며 복구할 수 없습니다.')
-
-  if (confirmed) {
+  if (await showConfirm('정말로 이 현장을 삭제하시겠습니까?\n이 현장에 속한 근무 기록도\n모두 삭제되며 복구할 수 없습니다.')) {
     try {
       await api.delete(`/projects/${projectId}`)
-      alert('현장이 정상적으로 삭제되었습니다.')
+      toast.success('현장이 정상적으로 삭제되었습니다.')
       router.push('/dashboard')
     } catch (error) {
       console.error('삭제 에러:', error)
-      alert(error.message)
+      toast.error(error.message);
     }
   }
 }

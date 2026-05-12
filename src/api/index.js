@@ -1,3 +1,5 @@
+import { toast } from '@/stores/toast.js'
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 // localStorage에서 통행증을 꺼내서 헤더를 만드는 헬퍼 함수
@@ -16,7 +18,7 @@ const getHeaders = () => {
 const handleResponse = async (response) => {
   // 토큰 만료 (401 Unauthorized) 처리
   if (response.status === 401) {
-    alert('로그인 세션이 만료되었습니다. 다시 로그인해 주세요.')
+    toast.error('로그인 세션이 만료되었습니다. 다시 로그인해 주세요.')
     localStorage.clear()
     sessionStorage.clear()
     window.location.href = '/' // 로그인 화면으로 강제 이동 및 새로고침
@@ -25,7 +27,7 @@ const handleResponse = async (response) => {
 
   // 삭제된 현장 등 없는 데이터에 접근 (404 Not Found) 처리
   if (response.status === 404) {
-    alert('요청하신 데이터를 찾을 수 없습니다.')
+    toast.error('요청하신 데이터를 찾을 수 없습니다.')
     window.location.href = '/dashboard' // 대시보드로 복귀
     throw new Error('Not Found')
   }
@@ -79,5 +81,14 @@ export const api = {
       headers: getHeaders()
     })
     return handleResponse(response)
-  }
+  },
+
+  patch: async (endpoint, data) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: data ? JSON.stringify(data) : null // 데이터가 있으면 넣고 없으면 null
+    })
+    return handleResponse(response)
+  },
 }

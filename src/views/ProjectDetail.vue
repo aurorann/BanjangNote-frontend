@@ -80,6 +80,8 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { api } from '@/api/index.js'
+import { toast } from '@/stores/toast.js'
+import { showConfirm } from '@/stores/confirm.js'
 
 const route = useRoute()
 const project = ref(null)
@@ -108,17 +110,31 @@ onMounted(async () => {
 })
 
 const toggleProjectSettled = async () => {
-  project.value.isSettled = !project.value.isSettled
+  if (!project.value) return;
 
-  const payload = {
-    name: project.value.name,
-    address: project.value.address,
-    startDate: project.value.startDate,
-    endDate: project.value.endDate,
-    clientId: project.value.client?.id,
-    isSettled: project.value.isSettled,
+  const currentStatus = project.value.isSettled;
+  const message = currentStatus
+    ? "수금 완료를 취소하시겠습니까?"
+    : "수금 완료 상태로 변경하시겠습니까?";
+
+  const ok = await showConfirm(message);
+  if (!ok) return;
+
+  try {
+    // 더 이상 복잡한 payload(이름, 날짜, 작업자 등)를 보낼 필요가 없습니다!
+    await api.patch(`/projects/${project.value.id}/settle`);
+
+    // 화면에 보이는 상태 즉시 반영
+    project.value.isSettled = !currentStatus;
+
+    toast.success('수금 상태가 변경되었습니다!')
+  } catch (error) {
+    console.error('수금 상태 변경 실패:', error);
+    toast.error('변경에 실패했습니다.');
+
+    // 실패했을 경우 화면 상태 롤백 (선택 사항)
+    project.value.isSettled = currentStatus;
   }
-  await api.put(`/projects/${project.value.id}`, payload)
 }
 
 const updateDays = async (assignment, delta) => {
