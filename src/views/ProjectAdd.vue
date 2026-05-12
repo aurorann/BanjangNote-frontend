@@ -45,9 +45,9 @@
         <input type="text" placeholder="이름" v-model="worker.name" />
         <select v-model="worker.role" class="form-select">
           <option value="" disabled>직급 선택</option>
-          <option value="초급">초급 (조공)</option>
-          <option value="중급">중급 (준기공)</option>
-          <option value="고급">고급 (기공)</option>
+          <option value="초급">초급(조공)</option>
+          <option value="중급">중급(준기공)</option>
+          <option value="고급">고급(기공)</option>
           <option value="반장">반장</option>
           <option value="기타">기타</option>
         </select>
@@ -57,7 +57,7 @@
           :value="autoFormatCurrency(worker.dailyRate)"
           @input="handleDailyRateInput(index, $event)"
         />
-        <button class="remove-btn" @click="removeWorker(index)">X</button>
+        <button class="icon-remove-btn" @click="removeWorker(index)">✕</button>
       </div>
 
       <button class="add-worker-btn" @click="addWorker">+ 작업자 추가</button>

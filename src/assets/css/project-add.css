@@ -124,22 +124,6 @@
   padding-right: 30px;
 }
 
-/* 작업자 삭제(X) 버튼 - 높이를 입력칸과 똑같이 맞춤 */
-.remove-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px; /* 정사각형 모양으로 */
-  height: 42px; /* 입력칸과 동일한 높이 */
-  background-color: #fee2e2;
-  color: #ef4444;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  box-sizing: border-box;
-}
-
 /* 작업자 추가(+) 버튼 */
 .add-worker-btn {
   padding: 14px;
@@ -198,4 +182,19 @@
 
 .delete-btn:hover {
   background-color: #dc2626;
+}
+
+.icon-remove-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444; /* 빨간색 경고 느낌 */
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 4px; /* 좌우 여백을 확 줄임 */
+  /*margin-left: 4px;*/
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* 공간이 좁아도 버튼이 찌그러지지 않게 보호 */
 }
