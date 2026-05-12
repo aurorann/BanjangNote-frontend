@@ -3,8 +3,8 @@
     <header class="top-nav">
       <h2>진행 중인 현장</h2>
       <div class="nav-buttons">
-        <button class="add-btn" @click="$router.push('/project/add')">+ 추가</button>
-        <button class="filter-btn" @click="showFilter = true">🔍 필터</button>
+        <button class="nav-add-btn" @click="$router.push('/project/add')">+ 추가</button>
+        <button class="filter-btn" @click="openFilterModal">🔍 필터</button>
       </div>
     </header>
 
@@ -14,16 +14,16 @@
       </button>
     </div>
 
-    <div v-if="showFilter" class="modal-overlay" @click.self="showFilter = false">
+    <div v-if="showFilterModal" class="filter-modal-overlay" @click.self="closeFilterModal">
       <div class="modal-content">
         <div class="modal-header">
           <h3>현장 검색 필터</h3>
-          <button class="close-btn" @click="showFilter = false">✖</button>
+          <button class="close-btn" @click="closeFilterModal">✖</button>
         </div>
 
         <div class="form-group">
           <label>발주처</label>
-          <select v-model="filter.clientId" class="form-select" style="flex: 1">
+          <select v-model="tempFilter.clientId" class="form-select" style="flex: 1">
             <option value="">전체 보기</option>
             <option v-for="client in clients" :key="client.id" :value="client.id">
               {{ client.name }}
@@ -34,11 +34,11 @@
         <div class="form-row">
           <div class="form-group">
             <label>시작일 (이후)</label>
-            <input type="date" v-model="filter.startDate" class="form-input" />
+            <input type="date" v-model="tempFilter.startDate" class="form-input" />
           </div>
           <div class="form-group">
             <label>종료일 (이전)</label>
-            <input type="date" v-model="filter.endDate" class="form-input" />
+            <input type="date" v-model="tempFilter.endDate" class="form-input" />
           </div>
         </div>
 
@@ -52,15 +52,15 @@
     <div class="filter-summary">
       <div class="summary-content">
         <span class="calendar-icon">📅</span>
-        <span class="date-text" :class="{ 'is-filtered': filter.startDate || filter.endDate }">
-          <template v-if="!filter.startDate && !filter.endDate">전체 기간</template>
+        <span class="date-text" :class="{ 'is-filtered': appliedFilter.startDate || appliedFilter.endDate }">
+          <template v-if="!appliedFilter.startDate && !appliedFilter.endDate">전체 기간</template>
 
           <template v-else>
-            {{ filter.startDate || '전체' }} ~ {{ filter.endDate || '전체' }}
+            {{ appliedFilter.startDate || '전체' }} ~ {{ appliedFilter.endDate || '전체' }}
           </template>
         </span>
-        <span v-if="filter.clientId" class="client-badge">
-      🏢 {{ clients.find(c => c.id === filter.clientId)?.name }}
+        <span v-if="appliedFilter.clientId" class="client-badge">
+      🏢 {{ clients.find(c => c.id === appliedFilter.clientId)?.name }}
     </span>
       </div>
     </div>
@@ -68,7 +68,7 @@
     <div class="project-list">
       <div v-if="loading && page === 0" class="loading-msg">데이터를 불러오는 중입니다...</div>
 
-      <div v-else-if="projects.length === 0" class="empty-msg">조건에 맞는 현장이 없습니다.</div>
+      <div v-else-if="projects.length === 0" class="dash-empty-msg">조건에 맞는 현장이 없습니다.</div>
 
       <div
         v-else
@@ -108,7 +108,12 @@ import { api } from '@/api/index.js'
 const projects = ref([])
 const clients = ref([])
 const loading = ref(false)
-const showFilter = ref(false)
+
+// 대시보드에 보이고 실제 검색에 쓰이는 '진짜 필터'
+// const appliedFilter = ref({ startDate: '', endDate: '', clientId: '' })
+// 모달 안에서만 조작하는 '임시 필터'
+const tempFilter = ref({ startDate: '', endDate: '', clientId: '' })
+const showFilterModal = ref(false)
 
 const page = ref(0)
 const isLastPage = ref(false)
@@ -137,7 +142,7 @@ const defaultDates = getDefaultDates()
 const savedFilter = sessionStorage.getItem('projectSearchFilter')
 
 // 저장된 필터가 있으면 쓰고, 없으면 기본 날짜 세팅
-const filter = ref(
+const appliedFilter = ref(
   savedFilter ? JSON.parse(savedFilter) : {
     clientId: '',
     startDate: defaultDates.startDate,
@@ -146,7 +151,7 @@ const filter = ref(
 )
 
 // 필터 값이 바뀔 때마다 세션 스토리지에 자동 저장 (페이지 이동 시 유지용)
-watch(filter, (newVal) => {
+watch(appliedFilter, (newVal) => {
   sessionStorage.setItem('projectSearchFilter', JSON.stringify(newVal))
 }, { deep: true }) // 객체 내부의 값이 바뀌는 것까지 감지
 
@@ -164,9 +169,9 @@ const fetchProjects = async (isNewSearch = false) => {
 
   try {
     const query = new URLSearchParams()
-    if (filter.value.clientId) query.append('clientId', filter.value.clientId)
-    if (filter.value.startDate) query.append('startDate', filter.value.startDate)
-    if (filter.value.endDate) query.append('endDate', filter.value.endDate)
+    if (appliedFilter.value.clientId) query.append('clientId', appliedFilter.value.clientId)
+    if (appliedFilter.value.startDate) query.append('startDate', appliedFilter.value.startDate)
+    if (appliedFilter.value.endDate) query.append('endDate', appliedFilter.value.endDate)
 
     query.append('page', page.value)
     query.append('size', 10)
@@ -209,17 +214,30 @@ onUnmounted(() => {
   if (observer) observer.disconnect()
 })
 
-const applyFilter = () => {
-  showFilter.value = false
-  fetchProjects(true)
+// 모달을 열 때: 진짜 필터의 값을 임시 필터로 "복사" 해옵니다.
+const openFilterModal = () => {
+  tempFilter.value = { ...appliedFilter.value }
+  showFilterModal.value = true
 }
 
+// 적용하기 버튼을 누를 때: 임시 필터의 값을 진짜 필터로 "복사" 하고 검색!
+const applyFilter = () => {
+  appliedFilter.value = { ...tempFilter.value }
+  showFilterModal.value = false
+
+  // sessionStorage에 저장하는 로직이 있다면 여기서 appliedFilter 값을 저장
+  fetchProjects(true) // 리스트 다시 불러오기
+}
+
+// 배경이나 X 버튼 눌러서 닫을 때
+const closeFilterModal = () => {
+  showFilterModal.value = false
+  // 💡 여기서 아무 작업도 안 함! (작성 중이던 임시 필터 값은 그냥 버려지고, 진짜 필터는 무사함)
+}
+
+// 초기화 버튼
 const resetFilter = () => {
-  filter.value = {
-    clientId: '',
-    startDate: '',
-    endDate: ''
-  }
+  tempFilter.value = { startDate: '', endDate: '', clientId: '' }
 }
 </script>
 
