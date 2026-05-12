@@ -9,7 +9,7 @@
     <header class="top-nav">
       <button class="back-btn" @click="$router.push('/dashboard')">◀ 이전</button>
       <h2>현장 관리</h2>
-      <button class="edit-btn" @click="$router.push(`/project/edit/${project.id}`)">수정</button>
+      <button class="nav-edit-btn" @click="$router.push(`/project/edit/${project.id}`)">수정</button>
     </header>
 
     <!-- 현장 기본 정보 -->

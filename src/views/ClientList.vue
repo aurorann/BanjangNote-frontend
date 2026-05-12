@@ -8,7 +8,7 @@
 
     <div class="content-container">
       <!-- 폼 열기 버튼 (폼이 닫혀있을 때만 보임) -->
-      <button v-if="!showForm" class="add-btn" @click="openAddForm">+ 새 거래처 등록</button>
+      <button v-if="!showForm" class="block-add-btn" @click="openAddForm">+ 새 거래처 등록</button>
 
       <!-- 입력/수정 폼 영역 -->
       <div v-if="showForm" class="form-card">
@@ -57,8 +57,8 @@
             </span>
           </div>
           <div class="client-actions">
-            <button class="edit-btn" @click="openEditForm(client)">수정</button>
-            <button class="delete-btn" @click="deleteClient(client.id)">삭제</button>
+            <button class="item-edit-btn" @click="openEditForm(client)">수정</button>
+            <button class="item-delete-btn" @click="deleteClient(client.id)">삭제</button>
           </div>
         </li>
         <li v-if="clients.length === 0" class="empty-msg">등록된 거래처가 없습니다.</li>

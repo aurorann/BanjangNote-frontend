@@ -1,80 +1,17 @@
+/* src/assets/css/project-add.css */
+
 .project-add-screen {
   background-color: #f8f9fa;
   min-height: 100vh;
-  padding-bottom: 40px; /* 스크롤 여유 공간 */
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  font-size: 15px;
-  font-weight: bold;
-  color: #4b5563;
-  cursor: pointer;
-  padding: 5px 10px;
-  white-space: nowrap;
+  padding-bottom: 40px;
 }
 
 .placeholder-box {
-  width: 60px; /* 제목 중앙 정렬용 빈 공간 */
+  width: 60px;
 }
-
-/* --- 메인 입력 폼 영역 (카드 스타일 적용) --- */
-.form-container {
-  width: auto;
-
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background-color: #fff;
-
-  /* 마진이 있으면 width는 auto여야 화면 안에 들어옵니다 */
-  margin: 15px;
-
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  border: 1px solid #f3f4f6;
-  box-sizing: border-box; /* 패딩이 너비를 먹지 않게 방어 */
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-group label {
-  font-size: 14px;
-  font-weight: bold;
-  color: #4b5563;
-}
-
-/* 기본 텍스트/날짜 입력칸 */
-.form-group input {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 15px;
-  background-color: #fff;
-  box-sizing: border-box;
-  transition: border-color 0.2s;
-  font-family: inherit;
-  /* 아이폰(iOS)에서 입력창에 둥근 그림자 생기는 거 방지용 */
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #3b82f6;
-}
-
-/* 🔥 수정된 발주처 선택 셀렉트 박스 (커스텀 화살표 적용) */
 
 .new-client-btn {
-  background-color: #1f2937;
+  background-color: #3b82f6;
   color: white;
   border: none;
   border-radius: 8px;
@@ -82,7 +19,6 @@
   font-weight: bold;
   cursor: pointer;
   white-space: nowrap;
-  box-sizing: border-box;
   transition: background-color 0.2s;
 }
 
@@ -108,27 +44,20 @@
   width: 100%;
 }
 
-/* 🎯 작업자 입력칸 & 직급 셀렉트 박스 공통 통제 */
-.worker-row input,
-.worker-row .form-select {
-  flex: 1; /* 3개의 칸이 똑같은 가로 비율을 가지도록 세팅 */
+.worker-row input, .worker-row .form-select {
+  flex: 1;
   min-width: 0;
-
-  height: 42px; /* 🔥 핵심: padding에 의존하지 않고 명시적으로 42px 고정! */
-  padding: 0 12px; /* 위아래 패딩을 0으로 만들어야 height: 42px 안에서 글자가 중앙 정렬됨 */
-
-  font-size: 14px; /* 글자 크기 통일 */
+  height: 42px;
+  padding: 0 12px;
+  font-size: 14px;
   border: 1px solid #d1d5db;
-  border-radius: 6px; /* global의 8px을 여기서 6px로 맞춰줌 */
-  box-sizing: border-box;
+  border-radius: 6px;
 }
 
 .worker-row .form-select {
-  /* 글로벌 속성의 우측 패딩(40px)을 살려주어 글자가 화살표를 침범하지 않게 방어 */
   padding-right: 30px;
 }
 
-/* 작업자 추가(+) 버튼 */
 .add-worker-btn {
   padding: 14px;
   background-color: #f3f4f6;
@@ -144,61 +73,16 @@
   background-color: #e5e7eb;
 }
 
-/* --- 🔥 누락되었던 하단 액션 버튼 (저장/삭제) --- */
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-/* 두 버튼의 공통 레이아웃 */
-.save-btn, .delete-btn {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px; /* 큼직하고 누르기 편한 높이 */
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  box-sizing: border-box;
-  margin: 0;
-  font-family: inherit;
-}
-
-.save-btn {
-  background-color: #3b82f6;
-  color: white;
-  transition: background 0.2s;
-}
-
-.save-btn:hover {
-  background-color: #2563eb;
-}
-
-.delete-btn {
-  background-color: #ef4444;
-  color: white;
-  transition: background 0.2s;
-}
-
-.delete-btn:hover {
-  background-color: #dc2626;
-}
-
 .icon-remove-btn {
   background: transparent;
   border: none;
-  color: #ef4444; /* 빨간색 경고 느낌 */
+  color: #ef4444;
   font-size: 12px;
   font-weight: bold;
-  padding: 0 4px; /* 좌우 여백을 확 줄임 */
-  /*margin-left: 4px;*/
+  padding: 0 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* 공간이 좁아도 버튼이 찌그러지지 않게 보호 */
+  flex-shrink: 0;
 }

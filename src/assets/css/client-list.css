@@ -2,38 +2,28 @@
 
 .client-list-screen {
   padding-bottom: 50px;
-  background-color: #f8f9fa; /* 다른 페이지와 동일한 배경색 */
+  background-color: #f8f9fa;
   min-height: 100vh;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  font-size: 15px;
-  font-weight: bold;
-  color: #4b5563;
-  cursor: pointer;
-  padding: 5px 10px;
-  white-space: nowrap; /* 지난번 해결한 두 줄 방지 코드 */
-  flex-shrink: 0;
-}
+/* 🔥 .back-btn 삭제됨 (global.css의 설정을 공통으로 사용합니다) */
 
 .placeholder-box {
-  width: 70px; /* 대시보드 버튼 너비에 맞춘 균형 박스 */
+  width: 70px;
 }
 
 .content-container {
   padding: 20px;
 }
 
-/* --- 새 거래처 등록 버튼 --- */
-.add-btn {
+/* 🔥 충돌 방지: 이름 변경 (.add-btn -> .block-add-btn) */
+.block-add-btn {
   width: 100%;
   padding: 16px;
   background-color: #3b82f6;
   color: white;
   border: none;
-  border-radius: 12px; /* 카드와 동일한 곡률 */
+  border-radius: 12px;
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 20px;
@@ -42,7 +32,7 @@
   box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 
-.add-btn:hover {
+.block-add-btn:hover {
   background-color: #2563eb;
 }
 
@@ -63,42 +53,10 @@
   color: #1f2937;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
+/* 🔥 .button-group, .save-btn 삭제됨 (global.css 설정을 그대로 가져다 씁니다) */
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #4b5563;
-  font-size: 14px;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  box-sizing: border-box;
-  font-size: 15px;
-  transition: border-color 0.2s;
-  font-family: inherit;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #3b82f6;
-}
-
-/* 폼 하단 버튼 그룹 */
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.save-btn, .cancel-btn {
+/* 취소 버튼만 여기 남겨둡니다 */
+.cancel-btn {
   flex: 1;
   height: 48px;
   display: inline-flex;
@@ -110,18 +68,6 @@
   font-size: 15px;
   cursor: pointer;
   transition: background-color 0.2s;
-}
-
-.save-btn {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.save-btn:hover {
-  background-color: #2563eb;
-}
-
-.cancel-btn {
   background-color: #f3f4f6;
   color: #4b5563;
 }
@@ -169,6 +115,8 @@
 .client-contact {
   font-size: 13px;
   color: #6b7280;
+  display: flex;
+  align-items: center;
 }
 
 /* 액션 버튼 (수정, 삭제) */
@@ -177,7 +125,8 @@
   gap: 8px;
 }
 
-.edit-btn, .delete-btn {
+/* 🔥 충돌 방지: .edit-btn -> .item-edit-btn, .delete-btn -> .item-delete-btn 으로 변경 */
+.item-edit-btn, .item-delete-btn {
   padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
@@ -187,23 +136,23 @@
   transition: all 0.2s;
 }
 
-.edit-btn {
+.item-edit-btn {
   background-color: #f3f4f6;
   color: #374151;
   border-color: #d1d5db;
 }
 
-.edit-btn:hover {
+.item-edit-btn:hover {
   background-color: #e5e7eb;
 }
 
-.delete-btn {
+.item-delete-btn {
   background-color: #fef2f2;
   color: #ef4444;
   border-color: #fecaca;
 }
 
-.delete-btn:hover {
+.item-delete-btn:hover {
   background-color: #fee2e2;
 }
 
@@ -222,21 +171,14 @@
 
 @media (max-width: 480px) {
   .form-row {
-    flex-direction: column; /* 모바일처럼 좁은 화면에선 위아래로 배치 */
+    flex-direction: column;
     gap: 0;
   }
 }
 
-.client-contact {
-  font-size: 13px;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-}
-
 .error-msg {
-  display: block; /* 인풋창 바로 밑으로 줄바꿈 */
-  color: #ef4444; /* 예쁜 빨간색 */
+  display: block;
+  color: #ef4444;
   font-size: 12px;
   margin-top: 4px;
   font-weight: bold;

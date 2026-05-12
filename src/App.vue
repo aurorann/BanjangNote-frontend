@@ -5,25 +5,25 @@
         {{ toastMessage }}
       </div>
     </transition>
-    <div v-if="isConfirmVisible" class="modal-overlay">
+
+    <div v-if="isConfirmVisible" class="confirm-overlay">
       <div class="confirm-modal">
         <p class="confirm-msg">{{ confirmMessage }}</p>
         <div class="confirm-actions">
-          <button class="cancel-btn" @click="onConfirmResponse(false)">취소</button>
-          <button class="confirm-btn" @click="onConfirmResponse(true)">확인</button>
+          <button class="confirm-cancel-btn" @click="onConfirmResponse(false)">취소</button>
+          <button class="confirm-ok-btn" @click="onConfirmResponse(true)">확인</button>
         </div>
       </div>
     </div>
-    <!-- 로그인 페이지가 아닐 때만 전역 헤더 표시 -->
+
     <header v-if="showGlobalHeader" class="global-user-header">
       <div class="user-info">
         <span class="user-badge">반장</span>
-        <span class="user-name"
-          ><strong>{{ userName }}</strong> 님 반갑습니다.</span
-        >
+        <span class="user-name"><strong>{{ userName }}</strong> 님 반갑습니다.</span>
       </div>
       <button class="global-logout-btn" @click="handleLogout">로그아웃</button>
     </header>
+
     <main class="main-content">
       <router-view />
     </main>
@@ -45,25 +45,23 @@ const route = useRoute()
 const router = useRouter()
 const userName = ref('')
 
-// 페이지(route)가 바뀔 때마다 실행됨
 watch(
   () => route.path,
   () => {
     userName.value = localStorage.getItem('userName') || '사용자'
   },
   { immediate: true },
-) // 화면이 처음 켜질 때도 즉시 실행
+)
 
-// 로그인, 회원가입 페이지에서는 전역 헤더를 숨깁니다.
 const showGlobalHeader = computed(() => {
   return !['Login', 'Signup', 'Root'].includes(route.name)
 })
 
 const handleLogout = async () => {
   if (await showConfirm('로그아웃 하시겠습니까?')) {
-    localStorage.clear() // 토큰, 이름 등 삭제
+    localStorage.clear()
     sessionStorage.removeItem('projectSearchFilter')
-    userName.value = '' // 변수도 비워줌
+    userName.value = ''
     router.push('/')
   }
 }
@@ -71,25 +69,22 @@ const handleLogout = async () => {
 
 <style>
 :root {
-  /* 헤더 높이 전역 변수로 선언 */
   --header-height: 56px;
 }
 
 .global-user-header {
   background-color: #1f2937;
   color: white;
-  padding: 0 16px; /* 위아래 패딩을 없애고 높이 자체를 강제합니다 */
+  padding: 0 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 1000; /* 서브 네비게이션(900)보다 무조건 위에 오도록 1000으로 설정 */
+  z-index: 1000;
   width: 100%;
   position: sticky;
   top: 0;
-
-  /* 🔥 핵심: 높이를 변수로 고정하고, 패딩이 높이를 뚫고 나가지 않게 제어 */
   height: var(--header-height);
-  box-sizing: border-box;
+  /* global.css에 box-sizing이 있으므로 생략 가능합니다 */
 }
 
 .user-info {
@@ -131,7 +126,6 @@ const handleLogout = async () => {
 /* 🎨 토스트 스타일 */
 .toast-container {
   position: fixed;
-  /* 🔥 핵심: 하드코딩된 60px 대신, 헤더 높이 + 10px 위치에 뜨도록 변경 */
   top: calc(var(--header-height) + 10px);
   left: 50%;
   transform: translateX(-50%);
@@ -146,28 +140,11 @@ const handleLogout = async () => {
   text-align: center;
 }
 
-/* 초록색 (성공) */
-.toast-container.success {
-  background-color: #10b981;
-}
+.toast-container.success { background-color: #10b981; }
+.toast-container.error { background-color: #ef4444; }
+.toast-container.warning { background-color: #f59e0b; color: #ffffff; }
+.toast-container.info { background-color: #3b82f6; }
 
-/* 빨간색 (에러/강한 경고) */
-.toast-container.error {
-  background-color: #ef4444;
-}
-
-/* 노란색 (주의) - 필요하시면 추가하세요! */
-.toast-container.warning {
-  background-color: #f59e0b;
-  color: #ffffff;
-}
-
-/* 파란색 (일반 정보) - 필요하시면 추가하세요! */
-.toast-container.info {
-  background-color: #3b82f6;
-}
-
-/* ✨ 상단 슬라이드 애니메이션 */
 .slide-down-enter-active,
 .slide-down-leave-active {
   transition: all 0.4s ease;
@@ -178,24 +155,20 @@ const handleLogout = async () => {
   opacity: 0;
 }
 
-.modal-overlay {
+/* 🔥 이름 충돌 완벽 방지: 컨펌 모달 전용 스타일 */
+.confirm-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex; align-items: center; justify-content: center;
   z-index: 10000;
 }
+
 .confirm-modal {
   background: white;
   padding: 24px;
   border-radius: 12px;
-  width: 85%;
-  max-width: 320px;
+  width: 85%; max-width: 320px;
   text-align: center;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
@@ -208,23 +181,12 @@ const handleLogout = async () => {
   word-break: break-all;
 }
 
-.confirm-actions {
-  display: flex;
-  gap: 10px;
-}
+.confirm-actions { display: flex; gap: 10px; }
+
 .confirm-actions button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
+  flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold;
 }
-.cancel-btn {
-  background: #f3f4f6;
-  color: #4b5563;
-}
-.confirm-btn {
-  background: #3b82f6;
-  color: white;
-}
+
+.confirm-cancel-btn { background: #f3f4f6; color: #4b5563; }
+.confirm-ok-btn { background: #3b82f6; color: white; }
 </style>
