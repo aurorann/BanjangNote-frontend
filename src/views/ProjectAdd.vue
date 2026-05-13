@@ -24,19 +24,15 @@
 
       <div class="form-group">
         <label>현장명</label>
-        <input type="text" v-model="form.name" placeholder="예: 반포 자이 101동 도배" />
+        <input type="text" v-model="form.name" placeholder="예: 반포 자이 101동 도배" maxlength="100" />
       </div>
       <div class="form-group">
         <label>현장 주소</label>
-        <input type="text" v-model="form.address" placeholder="예: 서울시 서초구 반포동" />
+        <input type="text" v-model="form.address" placeholder="예: 서울시 서초구 반포동" maxlength="255" />
       </div>
       <div class="form-group">
         <label>시작일</label>
         <input type="date" v-model="form.startDate" />
-      </div>
-      <div class="form-group">
-        <label>종료일(예정)</label>
-        <input type="date" v-model="form.endDate" />
       </div>
       <div class="form-group">
         <label>종료일(예정)</label>
@@ -48,13 +44,14 @@
         <textarea
           v-model="form.memo"
           placeholder="현장 관련 특이사항이나 메모를 자유롭게 남겨주세요."
+          maxlength="2000"
         ></textarea>
       </div>
 
       <h3 class="section-title">투입 예정 작업자</h3>
 
       <div class="worker-row" v-for="(worker, index) in workers" :key="index">
-        <input type="text" placeholder="이름" v-model="worker.name" />
+        <input type="text" placeholder="이름" v-model="worker.name" maxlength="50"/>
         <select v-model="worker.role" class="form-select">
           <option value="" disabled>직급 선택</option>
           <option value="초급">초급(조공)</option>
@@ -181,8 +178,26 @@ const saveProject = async () => {
     toast.warn('발주처와 현장명은 필수입니다.')
     return
   }
+  if (form.value.startDate && form.value.endDate) {
+    const start = new Date(form.value.startDate)
+    const end = new Date(form.value.endDate)
 
-  const payload = { ...form.value, workers: workers.value }
+    if (end < start) {
+      toast.warn('종료일은 시작일보다 빠를 수 없습니다. 날짜를 확인해주세요.')
+      return
+    }
+  }
+
+  const cleanedWorkers = workers.value
+    .filter(worker => worker.name.trim() !== '') // 이름 없는 빈칸 데이터는 버림!
+    .map(worker => ({
+      ...worker,
+      // 빈 문자열이거나 널이면 0으로, 아니면 숫자로 변환해서 담기
+      dailyRate: worker.dailyRate ? Number(worker.dailyRate) : 0
+    }))
+
+  const payload = { ...form.value, workers: cleanedWorkers }
+
 
   try {
     if (isEditMode.value) {
@@ -192,6 +207,7 @@ const saveProject = async () => {
       await api.post('/projects', payload)
       toast.success('현장이 성공적으로 등록되었습니다.')
     }
+    sessionStorage.removeItem('projectSearchFilter')
     router.push('/dashboard')
   } catch (error) {
     console.error('저장 에러:', error)
