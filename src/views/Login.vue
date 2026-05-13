@@ -108,6 +108,11 @@ const handleSubmit = async () => {
       })
       localStorage.setItem('token', response.token)
       localStorage.setItem('userName', response.name)
+
+      sessionStorage.removeItem('projectSearchFilter')
+      sessionStorage.removeItem('dashboardViewMode')
+      sessionStorage.removeItem('calendarViewDate')
+
       toast.info(`환영합니다, ${response.name}님!`)
       router.push('/dashboard')
     } else {
