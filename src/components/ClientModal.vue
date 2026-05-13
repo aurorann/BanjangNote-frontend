@@ -62,8 +62,14 @@ const saveNewClient = async () => {
     return
   }
 
+  const payload = {
+    name: newClient.value.name,
+    contactName: newClient.value.contactName?.trim() ? newClient.value.contactName : null,
+    contactPhone: newClient.value.contactPhone?.trim() ? newClient.value.contactPhone : null,
+  }
+
   try {
-    const savedClient = await api.post('/clients', newClient.value)
+    const savedClient = await api.post('/clients', payload)
     toast.success('새 업체가 등록되었습니다.')
     emit('saved', savedClient)
   } catch (error) {

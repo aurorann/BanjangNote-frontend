@@ -128,19 +128,18 @@ const saveClient = async () => {
     return
   }
 
-  if (form.value.contactPhone && !isValidPhoneNumber(form.value.contactPhone)) {
-    phoneError.value = '올바른 전화번호 형식이 아닙니다.' // 화면에 빨간 글씨 띄움
+  if (phoneError.value) {
     toast.warn('연락처 형식을 확인해주세요.')
     return
   }
 
-  try {
-    const payload = {
-      name: form.value.name,
-      contactName: form.value.contactName,
-      contactPhone: form.value.contactPhone,
-    }
+  const payload = {
+    name: form.value.name,
+    contactName: form.value.contactName?.trim() ? form.value.contactName : null,
+    contactPhone: form.value.contactPhone?.trim() ? form.value.contactPhone : null,
+  }
 
+  try {
     if (isEditMode.value) {
       await api.put(`/clients/${form.value.id}`, payload)
       toast.success('거래처가 수정되었습니다.')
