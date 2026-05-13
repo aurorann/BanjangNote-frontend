@@ -369,3 +369,153 @@
   font-size: 11px;
   margin-left: auto;
 }
+
+/* --- 뷰 토글 버튼 --- */
+.view-toggle-wrapper {
+  padding: 15px 20px 10px 20px;
+}
+.view-toggle {
+  display: flex;
+  background: #e5e7eb;
+  border-radius: 8px;
+  padding: 4px;
+}
+.view-toggle button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.view-toggle button.active {
+  background: #fff;
+  color: #1f2937;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* --- 달력 헤더 --- */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+.calendar-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2937;
+}
+.calendar-header button {
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 15px;
+  cursor: pointer;
+  color: #4b5563;
+  font-weight: bold;
+}
+.calendar-header button:hover {
+  background: #e5e7eb;
+}
+
+/* --- 달력 전체 컨테이너 --- */
+.calendar-container {
+  background: #fff;
+  margin: 0 15px 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+}
+
+/* --- 요일 헤더 --- */
+.calendar-days-header {
+  display: grid;
+  /* 🔥 비율 무너짐 방어의 핵심: minmax(0, 1fr) */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  background: #f8f9fa;
+  border-bottom: 1px solid #e5e7eb;
+}
+.day-name {
+  text-align: center; padding: 10px 0; font-size: 13px; font-weight: bold; color: #6b7280;
+}
+
+/* --- 주 단위 행 (Week Row) --- */
+.calendar-week {
+  position: relative; /* 자식인 막대기들이 절대 좌표를 잡을 기준점 */
+  border-bottom: 1px solid #f3f4f6;
+}
+.calendar-week:last-child { border-bottom: none; }
+
+/* --- 1. 배경 그리드 (날짜) --- */
+.week-bg {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  position: absolute; /* 영역에 꽉 차게 */
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+.day-cell {
+  border-right: 1px solid #f3f4f6;
+  padding: 4px;
+}
+.day-cell:last-child { border-right: none; }
+.day-cell.not-current .day-number { color: #d1d5db; /* 이번 달이 아니면 회색 처리 */ }
+
+/* --- 2. 현장 띠 레이어 --- */
+.events-layer {
+  position: absolute;
+  top: 30px; /* 날짜 숫자 아래부터 1층 시작 */
+  left: 0; right: 0; bottom: 0;
+  pointer-events: none; /* 빈 공간을 누르면 배경이 눌리도록 */
+}
+
+/* 막대기 전체 감싸개 (좌우 여백을 주어 막대기끼리 붙지 않게 함) */
+.event-bar-wrapper {
+  position: absolute;
+  padding: 0 2px;
+  box-sizing: border-box;
+  pointer-events: auto; /* 막대기는 터치 가능 */
+}
+
+/* 실제 색상이 칠해지는 긴 막대기 */
+.event-bar-pro {
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: bold;
+  height: 20px;
+  line-height: 20px; /* 텍스트 세로 중앙 정렬 */
+  border-radius: 4px;
+  padding: 0 6px;
+
+  /* 긴 글씨는 땡땡땡(...) 처리, 넓은 막대기면 넓은 만큼 글씨가 나옴! */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.event-bar-pro:active { opacity: 0.6; } /* 터치 시 피드백 */
+
+.event-bar-pro.settled {
+  background: #f0fdf4; color: #166534; border-left-color: #22c55e;
+}
+
+.day-number {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4b5563;
+  margin-top: 4px;    /* 🔥 위에서 살짝 띄우기 */
+  margin-left: 6px;   /* 🔥 왼쪽에서 살짝 띄우기 */
+  margin-bottom: 4px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+}
