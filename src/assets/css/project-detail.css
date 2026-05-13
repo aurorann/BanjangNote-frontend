@@ -245,3 +245,33 @@
   border: none;
   border-radius: 6px;
 }
+
+.section-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px; /* 기존 h3에 있던 마진을 컨테이너로 이동 */
+}
+
+.summary-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 총 O명 뱃지 */
+.stat-badge {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* 총 인건비 금액 */
+.stat-money {
+  color: #3b82f6;
+  font-weight: 900;
+  font-size: 16px;
+}

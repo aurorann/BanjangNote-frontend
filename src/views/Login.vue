@@ -10,7 +10,7 @@
         <!-- 회원가입일 때만 이름 입력 보이기 -->
         <div v-if="!isLoginMode" class="form-group">
           <label>이름</label>
-          <input type="text" v-model="form.name" placeholder="예: 홍길동 반장님" required />
+          <input type="text" v-model="form.name" placeholder="예: 홍길동 반장님" required maxlength="100"/>
         </div>
 
         <div class="form-group">
@@ -23,6 +23,7 @@
             placeholder="example@email.com"
             :class="{ 'input-error': emailError }"
             required
+            maxlength="100"
           />
           <!-- 에러 메시지 출력 영역 -->
           <span v-if="emailError" class="error-text">{{ emailError }}</span>

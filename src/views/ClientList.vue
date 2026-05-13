@@ -70,9 +70,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { api } from '../api'
-import { autoFormatPhoneNumber, isValidPhoneNumber } from '@/utils/formatters.js'
 import { toast } from '@/stores/toast.js'
 import { showConfirm } from '@/stores/confirm.js'
+import { usePhone } from '@/composables/usePhone.js'
 
 const clients = ref([])
 const showForm = ref(false)
@@ -84,25 +84,9 @@ const form = ref({
   contactName: '',
   contactPhone: '',
 })
-const phoneError = ref('')
-
-// 사용자가 입력할 때마다 실행되는 함수
+const { phoneError, formatAndValidate } = usePhone()
 const handlePhoneInput = (event) => {
-  // 입력된 값을 가져와서 자동 포맷팅
-  const formatted = autoFormatPhoneNumber(event.target.value)
-
-  // form 데이터에 덮어쓰기 (화면에 즉시 반영)
-  form.value.contactPhone = formatted
-
-  // 입력 필드의 값도 강제로 맞춰줌 (커서 튐 현상 방지)
-  event.target.value = formatted
-
-  // 실시간 에러 검증 - 다 입력했을 때만 검사
-  if (formatted.length === 13 && !isValidPhoneNumber(formatted)) {
-    phoneError.value = '올바른 전화번호 형식이 아닙니다.'
-  } else {
-    phoneError.value = ''
-  }
+  form.value.contactPhone = formatAndValidate(event)
 }
 
 const fetchClients = async () => {

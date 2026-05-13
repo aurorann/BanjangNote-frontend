@@ -88,7 +88,7 @@
 
           <div class="card-right">
             <div :class="['status-badge', project.isSettled ? 'settled' : 'unpaid']">
-              {{ project.isSettled ? '수금 완료 💰' : '수금 대기' }}
+              {{ project.isSettled ? '수금 완료' : '수금 대기' }}
             </div>
           </div>
         </div>
@@ -109,8 +109,6 @@ const projects = ref([])
 const clients = ref([])
 const loading = ref(false)
 
-// 대시보드에 보이고 실제 검색에 쓰이는 '진짜 필터'
-// const appliedFilter = ref({ startDate: '', endDate: '', clientId: '' })
 // 모달 안에서만 조작하는 '임시 필터'
 const tempFilter = ref({ startDate: '', endDate: '', clientId: '' })
 const showFilterModal = ref(false)

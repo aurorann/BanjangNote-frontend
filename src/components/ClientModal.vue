@@ -9,6 +9,7 @@
           type="text"
           v-model="newClient.name"
           placeholder="업체명을 입력하세요 (필수)"
+          maxlength="100"
         />
       </div>
 
@@ -18,15 +19,18 @@
           type="text"
           v-model="newClient.contactName"
           placeholder="담당자 성함을 입력하세요 (선택)"
+          maxlength="50"
         />
       </div>
 
       <div class="form-group">
         <label>담당자 연락처</label>
         <input
-          type="text"
+          type="tel"
           v-model="newClient.contactPhone"
+          @input="handlePhoneInput"
           placeholder="연락처를 입력하세요 (선택)"
+          maxlength="50"
         />
       </div>
 
@@ -42,6 +46,7 @@
 import { ref } from 'vue'
 import { api } from '@/api/index.js'
 import { toast } from '@/stores/toast.js'
+import { usePhone } from '@/composables/usePhone.js'
 
 const emit = defineEmits(['close', 'saved'])
 const newClient = ref({ name: '', contactName: '', contactPhone: '' })
@@ -49,6 +54,11 @@ const newClient = ref({ name: '', contactName: '', contactPhone: '' })
 const saveNewClient = async () => {
   if (!newClient.value.name.trim()) {
     toast.warn('업체명은 필수입니다!')
+    return
+  }
+
+  if (phoneError.value) {
+    toast.warn('연락처 형식을 확인해주세요.')
     return
   }
 
@@ -60,6 +70,13 @@ const saveNewClient = async () => {
     console.error('업체 등록 실패:', error)
     toast.error('업체 등록 중 에러가 발생했습니다.')
   }
+}
+
+const { phoneError, formatAndValidate } = usePhone()
+
+// 사용자가 입력할 때마다 실행되는 함수
+const handlePhoneInput = (event) => {
+  newClient.value.contactPhone = formatAndValidate(event)
 }
 </script>
 
