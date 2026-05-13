@@ -175,3 +175,26 @@ body {
   font-size: 20px;
   color: #1f2937;
 }
+
+/* --- 메모 입력용 텍스트 에어리어 스타일 --- */
+.form-group textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+
+  /* 🔥 textarea 전용 꿀팁: 세로로만 크기 조절 가능하게 설정 */
+  resize: vertical;
+  min-height: 100px; /* 기본 높이를 input보다 넉넉하게 */
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+}

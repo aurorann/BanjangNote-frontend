@@ -18,6 +18,10 @@
       <p class="client-name">🏢 {{ project.client?.name }}</p>
       <p class="project-info">📍 {{ project.address }}</p>
       <p class="project-info">📅 {{ project.startDate }} ~ {{ project.endDate || '미정' }}</p>
+      <div v-if="project.memo" style="margin-top: 15px; padding: 12px; background-color: #f9fafb; border-radius: 8px; font-size: 14px; color: #4b5563;">
+        <strong>📝 메모:</strong><br/>
+        <span style="white-space: pre-wrap; margin-top: 5px; display: inline-block;">{{ project.memo }}</span>
+      </div>
 
       <div class="settlement-row">
         <span class="settlement-label">발주처 대금 수금</span>

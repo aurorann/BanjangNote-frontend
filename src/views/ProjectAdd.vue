@@ -38,6 +38,18 @@
         <label>종료일(예정)</label>
         <input type="date" v-model="form.endDate" />
       </div>
+      <div class="form-group">
+        <label>종료일(예정)</label>
+        <input type="date" v-model="form.endDate" />
+      </div>
+
+      <div class="form-group">
+        <label>현장 메모 (특이사항)</label>
+        <textarea
+          v-model="form.memo"
+          placeholder="현장 관련 특이사항이나 메모를 자유롭게 남겨주세요."
+        ></textarea>
+      </div>
 
       <h3 class="section-title">투입 예정 작업자</h3>
 
@@ -104,6 +116,7 @@ const form = ref({
   address: '',
   startDate: '',
   endDate: '',
+  memo: '',
 })
 const workers = ref([{ name: '', role: '', dailyRate: '' }])
 
@@ -138,6 +151,7 @@ onMounted(async () => {
         address: projectData.address,
         startDate: projectData.startDate || '',
         endDate: projectData.endDate || '',
+        memo: projectData.memo || '',
       }
 
       const assignmentData = await api.get(`/projects/${projectId}/assignments`)
