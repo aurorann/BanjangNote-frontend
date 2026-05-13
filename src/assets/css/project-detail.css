@@ -41,6 +41,7 @@
   margin: 0 0 12px 0;
   color: #1f2937;
   font-size: 20px;
+  word-break: break-all;
 }
 
 .client-name {
@@ -96,6 +97,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 15px;
   border-bottom: 1px solid #f3f4f6;
   padding-bottom: 12px;
@@ -105,6 +108,7 @@
   font-size: 16px;
   font-weight: bold;
   color: #1f2937;
+  word-break: keep-all;
 }
 
 .worker-role {
@@ -134,12 +138,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 40px;  /* 🔥 34px -> 40px로 확대 (터치 편의성 증가) */
+  height: 40px; /* 🔥 34px -> 40px로 확대 */
   border-radius: 50%;
   border: 1px solid #d1d5db;
   background: #fff;
-  font-size: 18px;
+  font-size: 20px; /* 🔥 기호 크기도 살짝 키움 */
   color: #4b5563;
   cursor: pointer;
   transition: all 0.2s;
@@ -248,8 +252,9 @@
 
 .section-header-flex {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 15px;
   margin-bottom: 15px; /* 기존 h3에 있던 마진을 컨테이너로 이동 */
 }
 

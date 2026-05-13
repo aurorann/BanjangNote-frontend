@@ -25,7 +25,11 @@
     </header>
 
     <main class="main-content">
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <keep-alive include="Dashboard">
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
     </main>
   </div>
 </template>
