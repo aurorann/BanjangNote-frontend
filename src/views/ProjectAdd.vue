@@ -178,6 +178,12 @@ const saveProject = async () => {
     toast.warn('발주처와 현장명은 필수입니다.')
     return
   }
+
+  if (!form.value.startDate || !form.value.endDate) {
+    toast.warn('시작일과 종료일은 필수입니다.')
+    return
+  }
+
   if (form.value.startDate && form.value.endDate) {
     const start = new Date(form.value.startDate)
     const end = new Date(form.value.endDate)
@@ -192,12 +198,19 @@ const saveProject = async () => {
     .filter(worker => worker.name.trim() !== '') // 이름 없는 빈칸 데이터는 버림!
     .map(worker => ({
       ...worker,
-      // 빈 문자열이거나 널이면 0으로, 아니면 숫자로 변환해서 담기
+      // 빈 문자열이거나 널이면 0으로, 아니면 숫자로 변환
       dailyRate: worker.dailyRate ? Number(worker.dailyRate) : 0
     }))
 
-  const payload = { ...form.value, workers: cleanedWorkers }
-
+  const payload = {
+    clientId: form.value.clientId,
+    name: form.value.name,
+    address: form.value.address?.trim() ? form.value.address : null,
+    startDate: form.value.startDate,
+    endDate: form.value.endDate,
+    memo: form.value.memo?.trim() ? form.value.memo : null,
+    workers: cleanedWorkers
+  }
 
   try {
     if (isEditMode.value) {
@@ -208,7 +221,7 @@ const saveProject = async () => {
       toast.success('현장이 성공적으로 등록되었습니다.')
     }
     sessionStorage.removeItem('projectSearchFilter')
-    router.push('/dashboard')
+    await router.push('/dashboard')
   } catch (error) {
     console.error('저장 에러:', error)
     toast.error(error.message || '저장에 실패했습니다.');
@@ -220,7 +233,7 @@ const handleDelete = async () => {
     try {
       await api.delete(`/projects/${projectId}`)
       toast.success('현장이 정상적으로 삭제되었습니다.')
-      router.push('/dashboard')
+      await router.push('/dashboard')
     } catch (error) {
       console.error('삭제 에러:', error)
       toast.error(error.message);

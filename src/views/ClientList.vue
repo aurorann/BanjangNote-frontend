@@ -148,7 +148,7 @@ const saveClient = async () => {
       toast.success('새 거래처가 등록되었습니다.')
     }
     closeForm()
-    fetchClients() // 목록 새로고침
+    await fetchClients() // 목록 새로고침
   } catch (error) {
     toast.error(error.message || '저장에 실패했습니다.');
   }
@@ -159,7 +159,7 @@ const deleteClient = async (id) => {
     try {
       await api.delete(`/clients/${id}`)
       toast.success('삭제되었습니다.')
-      fetchClients() // 목록 새로고침
+      await fetchClients() // 목록 새로고침
     } catch (error) {
       toast.error(error.message || '삭제에 실패했습니다.');
     }
