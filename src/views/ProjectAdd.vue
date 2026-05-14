@@ -50,6 +50,11 @@
 
       <h3 class="section-title">투입 예정 작업자</h3>
 
+      <div class="worker-helper-text">
+        <span class="tip-icon">💡</span>
+        <span class="tip-text">동명이인은 <strong>김철수 1</strong>처럼 적어주세요.</span>
+      </div>
+
       <div class="worker-row" v-for="(worker, index) in workers" :key="index">
         <input type="text" placeholder="이름" v-model="worker.name" maxlength="50"/>
         <select v-model="worker.role" class="form-select">
@@ -155,8 +160,8 @@ onMounted(async () => {
       if (assignmentData.length > 0) {
         workers.value = assignmentData.map((a) => ({
           name: a.worker.name,
-          role: a.worker.role,
-          dailyRate: a.appliedDailyRate,
+          role: a.worker.role || '',
+          dailyRate: a.appliedDailyRate || '',
         }))
       }
     }
