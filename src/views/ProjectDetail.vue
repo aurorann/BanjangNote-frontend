@@ -15,8 +15,8 @@
     <!-- 현장 기본 정보 -->
     <div class="info-card" v-if="project">
       <h3>{{ project.name }}</h3>
-      <p class="client-name">🏢 {{ project.client?.name }}</p>
-      <p class="project-info">📍 {{ project.address }}</p>
+      <p v-if="project.client" class="client-name">🏢 {{ project.client?.name }}</p>
+      <p v-if="project.address" class="project-info">📍 {{ project.address }}</p>
       <p class="project-info">📅 {{ project.startDate }} ~ {{ project.endDate || '미정' }}</p>
       <div v-if="project.memo" style="margin-top: 15px; padding: 12px; background-color: #f9fafb; border-radius: 8px; font-size: 14px; color: #4b5563;">
         <strong>📝 메모:</strong><br/>
