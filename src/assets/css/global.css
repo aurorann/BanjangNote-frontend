@@ -1,3 +1,5 @@
+/* src/assets/css/global.css */
+
 * {
   box-sizing: border-box;
 }
@@ -16,93 +18,115 @@ body {
   max-width: 600px;
   margin: 0 auto;
   min-height: 100vh;
-  background-color: #f8f9fa; /* 앱 안쪽 배경색 */
+  background-color: #f8f9fa;
   position: relative;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05); /* 모바일 느낌 주는 그림자 */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 }
 
 .content-container, .project-list, .form-container {
   width: 100%;
-  box-sizing: border-box;
+}
+
+.form-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #fff;
+  margin: 15px; /* 양옆 여백 */
+  width: calc(100% - 30px); /* margin 15px * 2를 뺀 정확한 너비 */
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f3f4f6;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
 }
 
 .form-select {
-  /* 오른쪽 패딩을 40px로 늘려서 긴 글자가 화살표를 침범하지 않게 방어 */
   padding: 14px 40px 14px 14px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 15px;
   background-color: #fff;
-  box-sizing: border-box;
   cursor: pointer;
   font-family: inherit;
-
-  /* 1. 못생긴 브라우저 기본 화살표 숨기기 */
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-
-  /* 2. 깔끔한 커스텀 SVG 화살표를 배경 이미지로 삽입 */
   background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
   background-repeat: no-repeat;
-
-  /* 3. 화살표 위치 완벽 조정! (오른쪽에서 15px 띄우고, 세로는 정중앙) */
   background-position: right 15px top 50%;
-
-  /* 4. 화살표 크기 지정 */
   background-size: 12px auto;
 }
 
-/* (선택 사항) 셀렉트 박스 클릭 시 파란색 테두리 효과 */
 .form-select:focus {
   outline: none;
   border-color: #3b82f6;
 }
 
-.new-client-btn {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0 15px;
-  font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-
-/* =========================================
-   하단 액션 버튼 그룹 (수정 완료, 삭제)
-========================================= */
-
+/* --- 하단 액션 버튼 그룹 공통 --- */
 .button-group {
   display: flex;
   gap: 10px;
   margin-top: 20px;
-  align-items: stretch; /* 🔥 두 버튼의 높이를 부모 컨테이너에 맞춰 강제로 똑같이 늘립니다 */
+  align-items: stretch;
 }
 
-/* 두 버튼의 공통 레이아웃을 하나로 묶어 높이와 패딩 충돌을 방지합니다 */
 .save-btn, .delete-btn {
   flex: 1;
-  padding: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
   font-size: 16px;
   font-weight: bold;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  display: flex;
-  justify-content: center; /* 텍스트 가로 중앙 정렬 */
-  align-items: center; /* 텍스트 세로 중앙 정렬 */
-  box-sizing: border-box;
+  font-family: inherit;
 }
 
-/* 개별 버튼 색상 */
 .save-btn {
   background-color: #3b82f6;
   color: white;
+  transition: background 0.2s;
+}
+
+.save-btn:hover {
+  background-color: #2563eb;
 }
 
 .delete-btn {
@@ -115,20 +139,21 @@ body {
   background-color: #dc2626;
 }
 
+/* 🔥 4곳에 흩어져 있던 뒤로가기 버튼을 하나로 통합! */
 .back-btn {
-  padding: 6px 0;
   background: none;
   border: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: #3b82f6;
+  font-size: 15px;
   font-weight: bold;
-  width: 60px;
-  text-align: left;
+  color: #4b5563; /* 통일성 있게 다크그레이로 맞춤 */
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 0;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
+/* --- 상단 네비게이션 공통 --- */
 .top-nav {
   display: flex;
   justify-content: space-between;
@@ -137,16 +162,39 @@ body {
   background-color: #fff;
   border-bottom: 1px solid #eee;
   position: sticky;
-  top: 45.5px;
-  z-index: 10;
-  width: 100%;       /* 부모(#app)의 500px을 꽉 채움 */
+  top: var(--header-height);
+  z-index: 900;
+  width: 100%;
   left: 0;
   right: 0;
-  margin: 0 auto;    /* sticky 상태에서도 가운데 정렬 유지 */
+  margin: 0 auto;
 }
 
 .top-nav h2 {
   margin: 0;
   font-size: 20px;
   color: #1f2937;
+}
+
+/* --- 메모 입력용 텍스트 에어리어 스타일 --- */
+.form-group textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+
+  /* 🔥 textarea 전용 꿀팁: 세로로만 크기 조절 가능하게 설정 */
+  resize: vertical;
+  min-height: 100px; /* 기본 높이를 input보다 넉넉하게 */
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
 }

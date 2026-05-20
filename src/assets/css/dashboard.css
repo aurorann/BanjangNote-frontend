@@ -11,33 +11,32 @@
   gap: 10px;
 }
 
-.add-btn, .logout-btn {
+/* 🔥 충돌 방지: .add-btn -> .nav-add-btn 으로 이름 변경 (HTML도 맞춰주세요!) */
+.nav-add-btn, .logout-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 38px; /* 높이를 아예 똑같이 고정! */
+  height: 38px;
   padding: 0 14px;
   border-radius: 6px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  white-space: nowrap; /* 화면이 좁아져도 '로그아웃' 글자가 밑으로 떨어지지 않게 방어 */
-  box-sizing: border-box; /* 테두리(border)를 추가해도 이 높이(38px)를 넘지 않게 계산 */
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
-/* 3. 추가 버튼 고유 속성 */
-.add-btn {
+.nav-add-btn {
   background-color: #3b82f6;
   color: white;
-  border: 1px solid transparent; /* 로그아웃과 테두리 두께 맞춤 */
+  border: 1px solid transparent;
   transition: background 0.2s;
 }
 
-.add-btn:hover {
+.nav-add-btn:hover {
   background-color: #2563eb;
 }
 
-/* 4. 로그아웃 버튼 고유 속성 */
 .logout-btn {
   background-color: transparent;
   color: #4b5563;
@@ -67,7 +66,10 @@
   cursor: pointer;
   transition: background 0.2s;
 }
-.client-manage-btn:hover { background-color: #111827; }
+
+.client-manage-btn:hover {
+  background-color: #111827;
+}
 
 /* --- 현장 리스트 & 카드 --- */
 .project-list {
@@ -88,28 +90,26 @@
   background: #fff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   border: 1px solid #f3f4f6;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* 🔥 좌우 배치를 위한 Flex 설정 */
 .card-content {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* 세로 중앙 정렬 */
+  align-items: center;
   gap: 15px;
 }
 
-/* 왼쪽 정보 영역 */
 .card-body {
-  flex: 1; /* 남은 공간을 다 차지함 */
+  flex: 1;
 }
 
 .project-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
@@ -127,22 +127,28 @@
   font-size: 12px;
   border-radius: 6px;
   font-weight: bold;
-  white-space: nowrap; /* 뱃지 안 글씨 줄바꿈 방지 */
+  white-space: nowrap;
 }
-.status-badge.settled { background-color: #dcfce7; color: #166534; } /* 수금 완료: 초록색 */
-.status-badge.unpaid { background-color: #fee2e2; color: #991b1b; } /* 수금 대기: 빨간색 */
 
-/* --- 텍스트 스타일 정리 --- */
+.status-badge.settled {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.unpaid {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
 .project-card h3 {
-  margin: 0 0 6px 0; /* 아래 여백 살짝 줄임 */
+  margin: 0 0 6px 0;
   color: #1f2937;
   font-size: 17px;
-  word-break: break-all; /* 긴 이름 대비 */
+  word-break: break-all;
 }
 
-/* 오른쪽 뱃지 영역 */
 .card-right {
-  flex-shrink: 0; /* 뱃지가 찌그러지지 않게 고정 */
+  flex-shrink: 0;
 }
 
 .client-name {
@@ -153,7 +159,7 @@
 }
 
 .project-period {
-  color: #9ca3af; /* 색상을 조금 더 연하게 해서 현장명이 돋보이게 함 */
+  color: #9ca3af;
   font-size: 12px;
   margin: 0;
 }
@@ -182,14 +188,14 @@
   color: #111827;
 }
 
-/* --- 필터 모달 (팝업창) --- */
-.modal-overlay {
+/* 🔥 충돌 방지: App.vue와 겹치지 않게 filter-modal-overlay 로 변경 */
+.filter-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검은 배경 */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -203,7 +209,7 @@
   padding: 24px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  position: relative; /* 🔥 닫기 버튼의 기준점이 됩니다 */
+  position: relative;
 }
 
 .modal-content h3 {
@@ -211,25 +217,6 @@
   color: #1f2937;
   font-size: 18px;
   text-align: center;
-}
-
-/* 필터 입력 폼 */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  font-size: 13px;
-  font-weight: bold;
-  color: #4b5563;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #3b82f6;
 }
 
 .form-input {
@@ -243,16 +230,15 @@
   box-sizing: border-box;
 }
 
-/* 날짜 나란히 배치 */
 .form-row {
   display: flex;
   gap: 10px;
 }
+
 .form-row .form-group {
   flex: 1;
 }
 
-/* 모달 하단 버튼 */
 .modal-actions {
   display: flex;
   gap: 10px;
@@ -279,8 +265,8 @@
   color: #4b5563;
 }
 
-/* 빈 리스트 안내 문구 */
-.empty-msg {
+/* 🔥 대시보드 전용 빈 리스트 문구 */
+.dash-empty-msg {
   text-align: center;
   padding: 40px 20px;
   color: #6b7280;
@@ -312,7 +298,7 @@
 }
 
 .close-btn:hover {
-  color: #1f2937; /* 마우스 올리면(또는 터치 시) 진해짐 */
+  color: #1f2937;
 }
 
 .load-more-area {
@@ -320,6 +306,7 @@
   text-align: center;
   min-height: 50px;
 }
+
 .mini-spinner {
   width: 24px;
   height: 24px;
@@ -329,18 +316,21 @@
   animation: spin 0.8s linear infinite;
   display: inline-block;
 }
+
 .end-msg {
   color: #9ca3af;
   font-size: 13px;
   margin: 0;
 }
+
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* 검색 요약 영역 스타일 */
 .filter-summary {
-  padding: 0 20px; /* 좌우 여백을 다른 섹션과 맞춤 */
+  padding: 0 20px;
   margin-top: 10px;
 }
 
@@ -362,12 +352,12 @@
 
 .date-text {
   font-weight: 600;
-  color: #4b5563; /* 기본 색상 (회색 계열) */
-  transition: color 0.2s; /* 색상 변경 시 부드럽게 */
+  color: #4b5563;
+  transition: color 0.2s;
 }
 
 .date-text.is-filtered {
-  color: #3b82f6; /* 파란색으로 강조 */
+  color: #3b82f6;
 }
 
 .client-badge {
@@ -377,5 +367,222 @@
   border-radius: 4px;
   font-weight: bold;
   font-size: 11px;
-  margin-left: auto; /* 업체명은 오른쪽 끝으로 밀기 */
+  margin-left: auto;
+}
+
+/* --- 뷰 토글 버튼 --- */
+.view-toggle-wrapper {
+  padding: 15px 20px 10px 20px;
+}
+
+.view-toggle {
+  display: flex;
+  background: #e5e7eb;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.view-toggle button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-toggle button.active {
+  background: #fff;
+  color: #1f2937;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* --- 달력 헤더 --- */
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.month-control {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* 화살표와 년/월 글자 사이의 간격 */
+}
+
+.month-control h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2937;
+  min-width: 90px; /* 10월, 11월 등 두 자리 숫자가 되어도 화살표가 안 밀리게 고정 */
+  text-align: center;
+}
+
+.calendar-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.calendar-header button {
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 15px;
+  cursor: pointer;
+  color: #4b5563;
+  font-weight: bold;
+}
+
+.calendar-header button:hover {
+  background: #e5e7eb;
+}
+
+.today-btn {
+  position: absolute;
+  right: 20px; /* 화면 오른쪽 끝에 고정 */
+  font-size: 13px !important;
+  padding: 8px 12px !important;
+  background-color: #eff6ff !important; /* 약간 파란색 톤으로 포인트 */
+  color: #3b82f6 !important;
+}
+
+.today-btn:hover {
+  background-color: #dbeafe !important;
+}
+
+/* --- 달력 전체 컨테이너 --- */
+.calendar-container {
+  background: #fff;
+  margin: 0 15px 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+}
+
+/* --- 요일 헤더 --- */
+.calendar-days-header {
+  display: grid;
+  /* 🔥 비율 무너짐 방어의 핵심: minmax(0, 1fr) */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  background: #f8f9fa;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.day-name {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 13px;
+  font-weight: bold;
+  color: #6b7280;
+}
+
+/* --- 주 단위 행 (Week Row) --- */
+.calendar-week {
+  position: relative; /* 자식인 막대기들이 절대 좌표를 잡을 기준점 */
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.calendar-week:last-child {
+  border-bottom: none;
+}
+
+/* --- 1. 배경 그리드 (날짜) --- */
+.week-bg {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  position: absolute; /* 영역에 꽉 차게 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.day-cell {
+  border-right: 1px solid #f3f4f6;
+  padding: 4px;
+}
+
+.day-cell:last-child {
+  border-right: none;
+}
+
+.day-cell.not-current .day-number {
+  color: #d1d5db; /* 이번 달이 아니면 회색 처리 */
+}
+
+/* --- 2. 현장 띠 레이어 --- */
+.events-layer {
+  position: absolute;
+  top: 30px; /* 날짜 숫자 아래부터 1층 시작 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none; /* 빈 공간을 누르면 배경이 눌리도록 */
+}
+
+/* 막대기 전체 감싸개 (좌우 여백을 주어 막대기끼리 붙지 않게 함) */
+.event-bar-wrapper {
+  position: absolute;
+  padding: 0 2px;
+  box-sizing: border-box;
+  pointer-events: auto; /* 막대기는 터치 가능 */
+}
+
+/* 실제 색상이 칠해지는 긴 막대기 */
+.event-bar-pro {
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: bold;
+  height: 20px;
+  line-height: 20px; /* 텍스트 세로 중앙 정렬 */
+  border-radius: 4px;
+  padding: 0 6px;
+
+  /* 긴 글씨는 땡땡땡(...) 처리, 넓은 막대기면 넓은 만큼 글씨 나옴 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.event-bar-pro:active {
+  opacity: 0.6;
+}
+
+.event-bar-pro.settled {
+  background: #f0fdf4;
+  color: #166534;
+  border-left-color: #22c55e;
+}
+
+.day-number {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4b5563;
+  margin-top: 4px;
+  margin-left: 6px;
+  margin-bottom: 4px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+}
+
+/* 오늘 날짜 하이라이트 (동그라미 포인트) */
+.day-number.is-today {
+  background-color: #ef4444; /* 포인트 색상 (빨간색) */
+  color: #ffffff;            /* 글씨는 흰색으로 */
+  border-radius: 50%;        /* 완벽한 원형으로 만들기 */
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3); /* 빨간색에 맞춰 그림자 색상도 변경 */
 }

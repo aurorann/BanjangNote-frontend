@@ -9,15 +9,19 @@
     <header class="top-nav">
       <button class="back-btn" @click="$router.push('/dashboard')">◀ 이전</button>
       <h2>현장 관리</h2>
-      <button class="edit-btn" @click="$router.push(`/project/edit/${project.id}`)">수정</button>
+      <button class="nav-edit-btn" @click="$router.push(`/project/edit/${project.id}`)">수정</button>
     </header>
 
     <!-- 현장 기본 정보 -->
     <div class="info-card" v-if="project">
       <h3>{{ project.name }}</h3>
-      <p class="client-name">🏢 {{ project.client?.name }}</p>
-      <p class="project-info">📍 {{ project.address }}</p>
+      <p v-if="project.client" class="client-name">🏢 {{ project.client?.name }}</p>
+      <p v-if="project.address" class="project-info">📍 {{ project.address }}</p>
       <p class="project-info">📅 {{ project.startDate }} ~ {{ project.endDate || '미정' }}</p>
+      <div v-if="project.memo" style="margin-top: 15px; padding: 12px; background-color: #f9fafb; border-radius: 8px; font-size: 14px; color: #4b5563;">
+        <strong>📝 메모:</strong><br/>
+        <span style="white-space: pre-wrap; margin-top: 5px; display: inline-block;">{{ project.memo }}</span>
+      </div>
 
       <div class="settlement-row">
         <span class="settlement-label">발주처 대금 수금</span>
@@ -26,14 +30,20 @@
           :class="project.isSettled ? 'btn-paid' : 'btn-unpaid'"
           @click="toggleProjectSettled"
         >
-          {{ project.isSettled ? '수금 완료 ✔' : '수금 대기' }}
+          {{ project.isSettled ? '수금 완료' : '수금 대기' }}
         </button>
       </div>
     </div>
 
     <!-- 투입된 작업자 정산 리스트 -->
     <div class="worker-section">
-      <h3 class="section-title">투입 작업자 정산</h3>
+      <div class="section-header-flex">
+        <h3 class="section-title" style="margin: 0;">투입 작업자 정산</h3>
+        <div class="summary-stats">
+          <span class="stat-badge">총 {{ totalWorkers }}명</span>
+          <span class="stat-money">{{ totalLaborCost.toLocaleString() }}원</span>
+        </div>
+      </div>
 
       <div class="worker-card" v-for="assignment in assignments" :key="assignment.id">
         <div class="worker-header">
@@ -77,7 +87,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { api } from '@/api/index.js'
 import { toast } from '@/stores/toast.js'
@@ -87,6 +97,13 @@ const route = useRoute()
 const project = ref(null)
 const assignments = ref([])
 const loading = ref(true)
+
+const totalWorkers = computed(() => assignments.value.length)
+const totalLaborCost = computed(() => {
+  return assignments.value.reduce((sum, assignment) => {
+    return sum + (assignment.days * assignment.appliedDailyRate)
+  }, 0)
+})
 
 onMounted(async () => {
   const projectId = route.params.id
