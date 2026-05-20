@@ -578,3 +578,11 @@
   text-align: center;
   line-height: 20px;
 }
+
+/* 오늘 날짜 하이라이트 (동그라미 포인트) */
+.day-number.is-today {
+  background-color: #ef4444; /* 포인트 색상 (빨간색) */
+  color: #ffffff;            /* 글씨는 흰색으로 */
+  border-radius: 50%;        /* 완벽한 원형으로 만들기 */
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3); /* 빨간색에 맞춰 그림자 색상도 변경 */
+}

@@ -176,6 +176,7 @@
 import { ref, onMounted, onUnmounted, watch, computed, onActivated, onDeactivated } from 'vue'
 import { api } from '@/api/index.js'
 
+// eslint-disable-next-line vue/multi-word-component-names
 defineOptions({ name: 'Dashboard' })
 
 // --- 공통 상태 ---
