@@ -48,7 +48,7 @@ import { api } from '@/api/index.js'
 import { toast } from '@/stores/toast.js'
 import { usePhone } from '@/composables/usePhone.js'
 
-// 🔥 부모(ProjectAdd)에게 신호를 보내기 위한 이벤트 정의
+// 부모(ProjectAdd)에게 신호를 보내기 위한 이벤트 정의
 const emit = defineEmits(['close', 'saved'])
 const newClient = ref({ name: '', contactName: '', contactPhone: '' })
 
@@ -98,7 +98,7 @@ const handlePhoneInput = (event) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* 🔥 헤더(1000)보다 위에 오도록 설정 */
+  /* 헤더(1000)보다 위에 오도록 설정 */
   z-index: 2000;
 }
 

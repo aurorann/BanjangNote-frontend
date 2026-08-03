@@ -6,7 +6,7 @@
   padding-bottom: 40px;
 }
 
-/* 🔥 다른 화면의 회색 edit-btn과 겹치지 않게 이름 변경 (.edit-btn -> .nav-edit-btn) */
+/* 다른 화면의 회색 edit-btn과 겹치지 않게 이름 변경 (.edit-btn -> .nav-edit-btn) */
 .nav-edit-btn {
   background: none;
   border: none;
@@ -138,12 +138,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;  /* 🔥 34px -> 40px로 확대 (터치 편의성 증가) */
-  height: 40px; /* 🔥 34px -> 40px로 확대 */
+  width: 40px;  /* 34px -> 40px로 확대 (터치 편의성 증가) */
+  height: 40px; /* 34px -> 40px로 확대 */
   border-radius: 50%;
   border: 1px solid #d1d5db;
   background: #fff;
-  font-size: 20px; /* 🔥 기호 크기도 살짝 키움 */
+  font-size: 20px; /* 기호 크기도 살짝 키움 */
   color: #4b5563;
   cursor: pointer;
   transition: all 0.2s;
@@ -279,4 +279,41 @@
   color: #3b82f6;
   font-weight: 900;
   font-size: 16px;
+}
+
+/* Hub UI (대시보드 이동 버튼) */
+.hub-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 20px 20px 20px; /* info-card와 동일한 가로 여백 적용 */
+}
+
+.hub-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  font-weight: bold;
+  color: #1f2937;
+}
+
+/* 메모 박스 스타일 정리 */
+.memo-box {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #4b5563;
+}
+.memo-box span {
+  white-space: pre-wrap;
+  margin-top: 5px;
+  display: inline-block;
 }

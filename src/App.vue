@@ -127,7 +127,7 @@ const handleLogout = async () => {
   flex-direction: column;
 }
 
-/* 🎨 토스트 스타일 */
+/* 토스트 스타일 */
 .toast-container {
   position: fixed;
   top: calc(var(--header-height) + 10px);
@@ -159,7 +159,7 @@ const handleLogout = async () => {
   opacity: 0;
 }
 
-/* 🔥 이름 충돌 완벽 방지: 컨펌 모달 전용 스타일 */
+/* 이름 충돌 완벽 방지: 컨펌 모달 전용 스타일 */
 .confirm-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;

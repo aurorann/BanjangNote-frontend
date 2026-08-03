@@ -6,7 +6,7 @@
   min-height: 100vh;
 }
 
-/* 🔥 .back-btn 삭제됨 (global.css의 설정을 공통으로 사용합니다) */
+/* .back-btn 삭제됨 (global.css의 설정을 공통으로 사용합니다) */
 
 .placeholder-box {
   width: 70px;
@@ -16,7 +16,7 @@
   padding: 20px;
 }
 
-/* 🔥 충돌 방지: 이름 변경 (.add-btn -> .block-add-btn) */
+/* 충돌 방지: 이름 변경 (.add-btn -> .block-add-btn) */
 .block-add-btn {
   width: 100%;
   padding: 16px;
@@ -53,7 +53,7 @@
   color: #1f2937;
 }
 
-/* 🔥 .button-group, .save-btn 삭제됨 (global.css 설정을 그대로 가져다 씁니다) */
+/* .button-group, .save-btn 삭제됨 (global.css 설정을 그대로 사용) */
 
 /* 취소 버튼만 여기 남겨둡니다 */
 .cancel-btn {
@@ -125,7 +125,7 @@
   gap: 8px;
 }
 
-/* 🔥 충돌 방지: .edit-btn -> .item-edit-btn, .delete-btn -> .item-delete-btn 으로 변경 */
+/* 충돌 방지: .edit-btn -> .item-edit-btn, .delete-btn -> .item-delete-btn 으로 변경 */
 .item-edit-btn, .item-delete-btn {
   padding: 8px 12px;
   border-radius: 6px;
