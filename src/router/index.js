@@ -4,6 +4,8 @@ import Dashboard from '../views/Dashboard.vue'
 import ProjectAdd from '../views/ProjectAdd.vue'
 import ProjectDetail from '../views/ProjectDetail.vue'
 import ClientList from '@/views/ClientList.vue'
+import WorkerDetail from '@/views/WorkerDetail.vue'
+import MaterialDetail from '@/views/MaterialDetail.vue'
 import { toast } from '@/stores/toast.js'
 
 const routes = [
@@ -13,6 +15,8 @@ const routes = [
   { path: '/project/edit/:id', name: 'ProjectEdit', component: ProjectAdd, meta: { requiresAuth: true } },
   { path: '/project/:id', name: 'ProjectDetail', component: ProjectDetail, meta: { requiresAuth: true } },
   { path: '/clients', name: 'ClientList', component: ClientList, meta: { requiresAuth: true } },
+  { path: '/project/:id/workers', name: 'WorkerDetail', component: WorkerDetail, meta: { requiresAuth: true } },
+  { path: '/project/:id/materials', name: 'MaterialDetail', component: MaterialDetail, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
